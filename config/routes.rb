@@ -16,11 +16,12 @@ Rails.application.routes.draw do
   get "/appointments/doctor/:doctor_id/all", to: "appointments#get_all_appointments_for_doctor"
   get "/appointments/doctor/:doctor_id/today", to: "appointments#get_todays_appointment_for_doctor"
 
-  get "/treatments/ipd/:ipd_id", to: "treatments#ipd_patient_treatment"
+  get "/treatments/ipd/:ipd_id", to: "treatments#get_treatments_for_ipd"
 
   get "/ipds/admitted", to: "ipds#get_all_admitted_ipds"
   get "/ipds/ward/admitted", to: "ipds#get_all_admitted_ipds_from_ward"
   get "/ipds/ward", to: "ipds#get_all_ipds_from_ward"
+  put "/ipds/discharge/:id", to: "ipds#discharged_ipd_patient"
 
   get "/beds/all", to: "beds#get_all_beds_and_ipds"
   get "/beds/all/vaccant", to: "beds#get_vaccant_beds"

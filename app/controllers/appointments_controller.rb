@@ -21,7 +21,7 @@ class AppointmentsController < ApplicationController
         render json: { error: "Patient Already have scheduled Appointment for given Doctor" }, status: :unprocessable_entity
         return
       end
-      if Appointment.where(start_time: appointment_params[:start_time], doctor_id: appointment_params[:doctor_id]).exists?
+      if Appointment.where(slot_start_datetime: appointment_params[:slot_start_datetime], doctor_id: appointment_params[:doctor_id]).exists?
         render json: { error: "Appointment not available for given Doctor" }, status: :unprocessable_entity
         return
       end
@@ -29,7 +29,7 @@ class AppointmentsController < ApplicationController
     else
       @patient = Patient.new(patient_params.merge(user_id: appointment_params[:user_id]))
       if @patient.save
-        if Appointment.where(start_time: appointment_params[:start_time], doctor_id: appointment_params[:doctor_id]).exists?
+        if Appointment.where(slot_start_datetime: appointment_params[:slot_start_datetime], doctor_id: appointment_params[:doctor_id]).exists?
           render json: { error: "Appointment not available for given Doctor" }, status: :unprocessable_entity
           return
         end
