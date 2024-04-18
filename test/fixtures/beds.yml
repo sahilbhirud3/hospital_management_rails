@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ward_type: MyString
+  bed_no: MyString
+  status: MyString
+
+two:
+  ward_type: MyString
+  bed_no: MyString
+  status: MyString

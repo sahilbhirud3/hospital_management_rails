@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ipd: one
+  description: MyText
+  datetime: 2024-04-15 18:12:42
+
+two:
+  ipd: two
+  description: MyText
+  datetime: 2024-04-15 18:12:42
