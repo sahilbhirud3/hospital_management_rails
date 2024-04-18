@@ -23,7 +23,7 @@ class PatientsController < ApplicationController
 
   #GET /patients/user/:user_id
   def get_all_patients_for_user
-    patients = Patient.where(user_id: 1)
+    patients = Patient.where(user_id: params[:user_id])
     render json: [] if patients.empty?
     render json: patients.as_json(only: [:id, :first_name, :last_name, :gender, :contact])
   end
@@ -37,6 +37,6 @@ class PatientsController < ApplicationController
   end
 
   def patient_params
-    params.require(:patient).permit(:first_name, :last_name, :birthdate, :gender, :contact)
+    params.require(:patient).permit(:first_name, :last_name, :birthdate, :gender, :contact, :user_id)
   end
 end
