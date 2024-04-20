@@ -47,13 +47,12 @@ module AppointmentsHelper
   def self.available_slots(doctor_id, date = DateTime.now.strftime("%Y-%m-%d"))
     doctor, all_slots = generate_onwards_slots(doctor_id, date)
     return all_slots if all_slots.empty?
-
     existing_slots = Appointment.where(doctor_id: doctor_id)
                                 .where("DATE(slot_start_datetime) = ?", date)
+                                .where(status: "scheduled")
                                 .pluck(:slot_start_datetime)
                                 .map { |slot| slot.strftime(SLOT_TIME_FORMAT) }
     available_slots = all_slots - existing_slots
-
     available_slots
   end
 

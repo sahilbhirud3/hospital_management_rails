@@ -5,13 +5,13 @@ class UsersController < ApplicationController
   # get all users
   def index
     @users = User.all
-    render json: @users.as_json({ except: [:role, :created_at, :updated_at] }), status: :ok
+    render json: @users.as_json({ only: [:id, :first_name, :last_name, :email, :contact, :role] }), status: :ok
   end
 
   # GET /users/:id
   # get user
   def show
-    render json: @user.as_json(except: [:created_at, :updated_at]), status: :ok
+    render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), status: :ok
   end
 
   # POST /users
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: { user: @user.as_json(except: [:created_at, :updated_at]), message: "User registered successfully" }, status: :created
+      render json: { user: @user.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), message: "User registered successfully" }, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end

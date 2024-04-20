@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   get "/appointments/doctor/:doctor_id/all", to: "appointments#get_all_appointments_for_doctor"
   get "/appointments/doctor/:doctor_id/today", to: "appointments#get_todays_appointment_for_doctor"
+  get "/appointments/user/:user_id", to: "appointments#get_all_appointments_for_user"
+  put "/appointments/:id/cancel", to: "appointments#cancel_appointment"
 
   get "/treatments/ipd/:ipd_id", to: "treatments#get_treatments_for_ipd"
 
@@ -26,6 +28,7 @@ Rails.application.routes.draw do
   get "/beds/all", to: "beds#get_all_beds_and_ipds"
   get "/beds/all/vaccant", to: "beds#get_vaccant_beds"
   get "/beds/all/acquired", to: "beds#get_acquired_beds_and_ipds"
+  get "/beds/ward_types", to: "beds#get_ward_types"
 
   get "/patients/user/:user_id", to: "patients#get_all_patients_for_user"
   resources :departments

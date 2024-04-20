@@ -3,7 +3,7 @@ class DoctorsController < ApplicationController
   #GET /doctors
   #all doctors
   def index
-    @doctors = User.get_doctors.as_json(except: [:created_at, :updated_at])
+    @doctors = User.get_doctors.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role])
     render json: @doctors, status: :ok
   end
 
@@ -25,7 +25,7 @@ class DoctorsController < ApplicationController
       @doctor_detail = @user.build_doctor_detail(doctor_params[:doctor_detail_attributes])
 
       if @doctor_detail.save
-        render json: { user: @user.as_json(except: [:created_at, :updated_at]), doctor_detail: @doctor_detail, message: "Doctor registered successfully" }, status: :created
+        render json: { user: @user.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), doctor_detail: @doctor_detail, message: "Doctor registered successfully" }, status: :created
       else
         render json: @doctor_detail.errors, status: :unprocessable_entity
       end
@@ -38,6 +38,10 @@ class DoctorsController < ApplicationController
   #today's available appointment for doctor
   def todays_available_appointment_slot_for_doctor
     @available_slots = AppointmentsHelper.available_slots(params[:id])
+    if @available_slots.empty?
+      render json: { error: "No Appointments" }, status: :not_found
+      return
+    end
     render json: @available_slots, status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Doctor not found" }, status: :not_found

@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: [:show]
+  before_action :set_appointment, only: [:show, :cancel_appointment]
   # GET /appointments
   # all appointments
   def index
@@ -21,10 +21,16 @@ class AppointmentsController < ApplicationController
         render json: { error: "Patient Already have scheduled Appointment for given Doctor" }, status: :unprocessable_entity
         return
       end
+      if !Ipd.find_by(patient_id: appointment_params[:patient_id]).nil?
+        render json: { error: "Patient Already Admitted" }, status: :unprocessable_entity
+        return
+      end
+
       if Appointment.where(slot_start_datetime: appointment_params[:slot_start_datetime], doctor_id: appointment_params[:doctor_id]).exists?
         render json: { error: "Appointment not available for given Doctor" }, status: :unprocessable_entity
         return
       end
+
       @appointment = Appointment.new(appointment_params)
     else
       @patient = Patient.new(patient_params.merge(user_id: appointment_params[:user_id]))
@@ -54,11 +60,32 @@ class AppointmentsController < ApplicationController
     render json: @appointments.as_json(except: [:created_at, :updated_at]), status: :ok
   end
 
+  #GET /appointments/user/:user_id
+  #get all appointments booked by user
+  def get_all_appointments_for_user
+    @appointments = Appointment.where(user_id: params[:user_id]).order(slot_start_datetime: :desc)
+    render json: @appointments.as_json(except: [:created_at, :updated_at]), status: :ok
+  end
+
   #GET /appointments/doctor/:doctor_id/today
   #get today's doctor's(doctor_id) appointments
   def get_todays_appointment_for_doctor
     @appointments = Appointment.where(doctor_id: params[:doctor_id]).where("DATE(slot_start_datetime) = ?", DateTime.now)
     render json: @appointments.as_json(except: [:created_at, :updated_at]), status: :ok
+  end
+
+  #PUT /appointments/:id/cancel
+  #cancel the appointment
+  def cancel_appointment
+    if @appointment.status == "cancelled"
+      render json: { error: "Appointment already Cancelled" }, status: :unprocessable_entity
+      return
+    end
+    @appointment.update(status: "cancelled")
+    render json: {
+      message: "Appointment Cancelled",
+      appointment: @appointment.as_json(except: [:created_at, :updated_at]),
+    }, status: :ok
   end
 
   private
