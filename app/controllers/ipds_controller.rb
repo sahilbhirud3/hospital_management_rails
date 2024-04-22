@@ -3,11 +3,6 @@ class IpdsController < ApplicationController
 
   #GET /ipds
   #get all ipds
-  # def index
-  #   @ipds = Ipd.joins(:patient, :department, :bed).select(:id, :patient_id, "patients.first_name", "patients.last_name", "patients.gender", :department_id, "departments.name", :bed_id, "beds.bed_no", "beds.ward_type", :treatment_description, :status)
-  #   render json: @ipds.order(admission_datetime: :desc).as_json(except: [:created_at, :updated_at]), status: :ok
-  # end
-
   def index
     @ipds = Ipd.joins(:patient, :department, :bed)
     conditions = {}

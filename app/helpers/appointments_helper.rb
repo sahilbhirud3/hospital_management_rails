@@ -35,7 +35,7 @@ module AppointmentsHelper
 
     time_slots = []
     while current_time < end_time
-      puts current_time
+      # puts current_time
       time_slots << current_time.strftime(SLOT_TIME_FORMAT)
       current_time += required_time_slot.minutes
     end

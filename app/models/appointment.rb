@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: appointments
+#
+#  id                  :bigint           not null, primary key
+#  user_id             :bigint           not null
+#  doctor_id           :bigint
+#  patient_id          :bigint           not null
+#  slot_start_datetime :datetime
+#  slot_end_datetime   :datetime
+#  appointment_type    :string
+#  status              :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#
 class Appointment < ApplicationRecord
   validates :user_id, :doctor_id, :patient_id, :slot_start_datetime, :slot_end_datetime, :appointment_type, :status, presence: true
   validates :appointment_type, inclusion: { in: %w(checkup followup), message: "%{value} is not a valid appointment type" }

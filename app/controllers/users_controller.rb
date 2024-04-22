@@ -4,7 +4,9 @@ class UsersController < ApplicationController
   # GET /users
   # get all users
   def index
-    @users = User.all
+    conditions = {}
+    conditions[:role] = params[:role] if params[:role].present?
+    @users = User.all.where(conditions)
     render json: @users.as_json({ only: [:id, :first_name, :last_name, :email, :contact, :role] }), status: :ok
   end
 

@@ -1,8 +1,8 @@
 class TreatmentsController < ApplicationController
-  before_action :set_treatment, only: [:show]
+  before_action :set_treatment, only: [:show, :destroy]
   #GET /treatments
   def index
-    @treatments = Treatment.all
+    @treatments = Treatment.all.order(datetime: :desc)
     render json: @treatments.as_json(except: [:created_at, :updated_at]), status: :ok
   end
 
@@ -23,13 +23,19 @@ class TreatmentsController < ApplicationController
   #GET /treatments/ipd/:ipd_id
   #get treatment records for specific ipd patient (ipd_id)
   def get_treatments_for_ipd
-    @treatments = Treatment.where(ipd_id: params[:ipd_id])
+    @treatments = Treatment.where(ipd_id: params[:ipd_id]).order(datetime: :desc)
     render json: @treatments.as_json(except: [:created_at, :updated_at]), status: :ok
   end
 
   #GET /treatments/:id
   def show
     render json: @treatment.as_json(except: [:created_at, :updated_at]), status: :ok
+  end
+
+  #DELETE /treatments/:id
+  def destroy
+    @treatment.destroy
+    render json: { message: "Treatment Deleted Successfully" }, status: :ok
   end
 
   private

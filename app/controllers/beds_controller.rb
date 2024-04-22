@@ -3,7 +3,10 @@ class BedsController < ApplicationController
 
   # GET /beds
   def index
-    @beds = Bed.all
+    conditions = {}
+    conditions[:status] = params[:status] if params[:status].present?
+    conditions[:ward_type] = params[:ward_type] if params[:ward_type].present?
+    @beds = Bed.where(conditions)
     render json: @beds.as_json(except: [:created_at, :updated_at]), status: :ok
   end
 
@@ -31,6 +34,7 @@ class BedsController < ApplicationController
   def update
     if @bed.status == "acquired"
       render json: { error: "Currently Bed status is acquired..Discharge patient first" }, status: :unprocessable_entity
+      return
     end
 
     if bed_update_params[:status] == "vaccant" || bed_update_params[:status] == "unavailable"

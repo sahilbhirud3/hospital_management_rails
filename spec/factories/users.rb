@@ -13,21 +13,13 @@
 #  updated_at      :datetime         not null
 #  password_digest :string
 #
-
-one:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  contact: MyString
-  password: MyString
-  role: MyString
-  doctor_details: one
-
-two:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  contact: MyString
-  password: MyString
-  role: MyString
-  doctor_details: two
+FactoryBot.define do
+  factory :user do
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    email { Faker::Internet.unique.email }
+    contact { Faker::Number.unique.number(digits: 10) }
+    password { 123 }
+    role { "user" }
+  end
+end

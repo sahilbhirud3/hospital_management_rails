@@ -15,19 +15,19 @@
 #
 
 one:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  contact: MyString
-  password: MyString
-  role: MyString
-  doctor_details: one
+  first_name: "sahil"
+  last_name: "bhirud"
+  email: "sahilb@gmail.com"
+  contact: "8765434231"
+  password: "123"
+  role: "user"
+  # doctor_details: one
 
 two:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  contact: MyString
-  password: MyString
-  role: MyString
-  doctor_details: two
+  first_name: "swapnil"
+  last_name: "deshmukh"
+  email: "swapnilb@gmail.com"
+  contact: "8208160182"
+  password: "123"
+  role: "user"
+  # doctor_details: on  e

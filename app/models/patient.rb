@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: patients
+#
+#  id         :bigint           not null, primary key
+#  first_name :string
+#  last_name  :string
+#  birthdate  :date
+#  gender     :string
+#  contact    :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint
+#
 class Patient < ApplicationRecord
   validates :first_name, :last_name, :birthdate, :gender, :contact, presence: true
   validates :first_name, :last_name, length: { maximum: 25 }

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient: one
+  department: one
+  treatment_description: MyString
+  admission_datetime: 2024-04-11 15:44:30
+  discharge_datetime: 2024-04-11 15:44:30
+  bed: one
+  status: MyString
+
+two:
+  patient: two
+  department: two
+  treatment_description: MyString
+  admission_datetime: 2024-04-11 15:44:30
+  discharge_datetime: 2024-04-11 15:44:30
+  bed: two
+  status: MyString

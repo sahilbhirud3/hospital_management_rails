@@ -13,21 +13,13 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #
-
-one:
-  user: one
-  user: one
-  patient: one
-  slot_start_datetime: 2024-04-11 16:19:49
-  slot_end_datetime: 2024-04-11 16:19:49
-  type: 
-  status: MyString
-
-two:
-  user: two
-  user: two
-  patient: two
-  slot_start_datetime: 2024-04-11 16:19:49
-  slot_end_datetime: 2024-04-11 16:19:49
-  type: 
-  status: MyString
+FactoryBot.define do
+  factory :appointment do
+    user { create(:user) }
+    patient { create(:patient) }
+    slot_start_datetime { DateTime.now }
+    slot_end_datetime { DateTime.now + 30.minutes }
+    status { "scheduled" }
+    appointment_type { "followup" }
+  end
+end

@@ -13,10 +13,13 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
-require "test_helper"
-
-class DoctorDetailTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+FactoryBot.define do
+  factory :doctor_detail do
+    department { create(:department) }
+    regno { Faker::Alphanumeric.unique.alphanumeric(number: 8) }
+    start_time { DateTime.now }
+    end_time { DateTime.now + 30.minutes }
+    qualification { "MS" }
+    required_time_slot { 15 }
+  end
 end

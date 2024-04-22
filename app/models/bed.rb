@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: beds
+#
+#  id         :bigint           not null, primary key
+#  ward_type  :string
+#  bed_no     :string
+#  status     :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
 class Bed < ApplicationRecord
   WARD_TYPES = [
     "ICU",
