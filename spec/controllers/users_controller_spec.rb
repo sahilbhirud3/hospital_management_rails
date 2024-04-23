@@ -10,7 +10,7 @@ RSpec.describe UsersController, type: :controller do
       get :index
       puts "User GET#index Tested"
       expect(response).to be_successful
-      # puts "Response Body: #{response.body}"
+      puts "Response Body: #{response.body}"
     end
   end
 

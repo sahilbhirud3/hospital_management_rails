@@ -11,5 +11,8 @@
 #
 FactoryBot.define do
   factory :treatment do
+    
+    description { "Test Treatment " }
+    datetime { DateTime.now }
   end
 end
