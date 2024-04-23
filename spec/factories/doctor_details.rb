@@ -15,11 +15,12 @@
 #
 FactoryBot.define do
   factory :doctor_detail do
-    department { create(:department) }
+    association :user
     regno { Faker::Alphanumeric.unique.alphanumeric(number: 8) }
     start_time { DateTime.now }
-    end_time { DateTime.now + 30.minutes }
+    end_time { DateTime.now + 8.hours }
     qualification { "MS" }
     required_time_slot { 15 }
+    association :department #, strategy: :build
   end
 end

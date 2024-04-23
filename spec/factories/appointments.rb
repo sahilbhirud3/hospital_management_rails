@@ -15,8 +15,9 @@
 #
 FactoryBot.define do
   factory :appointment do
-    user { create(:user) }
-    patient { create(:patient) }
+    association :user
+    association :patient
+    doctor { create(:doctor_user) } # Assuming you have a Doctor factory defined
     slot_start_datetime { DateTime.now }
     slot_end_datetime { DateTime.now + 30.minutes }
     status { "scheduled" }

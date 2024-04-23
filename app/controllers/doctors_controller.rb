@@ -39,7 +39,7 @@ class DoctorsController < ApplicationController
   def todays_available_appointment_slot_for_doctor
     @available_slots = AppointmentsHelper.available_slots(params[:id])
     if @available_slots.empty?
-      render json: { error: "No Appointments" }, status: :not_found
+      render json: { message: "No Appointments" }, status: :ok
       return
     end
     render json: @available_slots, status: :ok

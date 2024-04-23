@@ -13,6 +13,6 @@ FactoryBot.define do
   factory :bed do
     ward_type { Bed::WARD_TYPES.sample }
     bed_no { Faker::Number.unique.number(digits: 3) }
-    status { "vaccant"}
+    status { "vaccant" }
   end
 end

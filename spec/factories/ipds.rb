@@ -17,5 +17,8 @@ FactoryBot.define do
   factory :ipd do
     admission_datetime { DateTime.now }
     status { "admitted" }
+    association :patient
+    association :bed
+    association :department
   end
 end

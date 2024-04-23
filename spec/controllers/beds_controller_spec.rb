@@ -2,11 +2,10 @@ require "rails_helper"
 RSpec.describe BedsController, type: :controller do
   before do
   end
+  let(:bed) { create(:bed) }
 
   describe "GET #index" do
     it "returns a successful response" do
-      create(:bed) # Create a bed using FactoryBot
-      create(:bed)
       get :index
       expect(response).to be_successful
       # puts "Response Body: #{response.body}"

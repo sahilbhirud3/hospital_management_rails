@@ -19,7 +19,15 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.unique.email }
     contact { Faker::Number.unique.number(digits: 10) }
-    password { 123 }
+    password { "123" }
     role { "user" }
+
+    factory :doctor_user do
+      role { "doctor" }
+
+      after(:create) do |user|
+        create(:doctor_detail, user: user)
+      end
+    end
   end
 end

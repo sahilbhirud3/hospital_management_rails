@@ -11,6 +11,7 @@ Rails.application.configure do
     Bullet.bullet_logger = true
     Bullet.raise         = true # raise an error if n+1 query occurs
   end
+  config.log_level = :debug
 
   # Settings specified here will take precedence over those in config/application.rb.
 

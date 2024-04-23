@@ -35,6 +35,7 @@ class IpdsController < ApplicationController
   #POST /ipds
   #Create new ipd record
   def create
+
     # Check if the patient is already admitted
     if Ipd.where(patient_id: ipd_params[:patient_id], status: "admitted").exists?
       render json: { error: "Patient is already admitted" }, status: :unprocessable_entity
