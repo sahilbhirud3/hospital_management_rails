@@ -29,12 +29,9 @@ RSpec.describe IpdsController, type: :controller do
         }
       }
       it "creates ipd" do
-        post :create, params: ipd_params
-
         expect {
-          response
+          post :create, params: ipd_params
         }.to change(Ipd, :count).by(1)
-
         expect(response).to have_http_status(:created)
       end
     end
