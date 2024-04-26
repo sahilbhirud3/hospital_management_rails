@@ -21,8 +21,8 @@ class DoctorDetail < ApplicationRecord
   # app/models/your_model.rb
 
   def validate_required_time_slot
-    if !(required_time_slot >= 10 && (required_time_slot % 60 == 0 || 60 % required_time_slot == 0))
-      errors.add(:required_time_slot, "must be 10 or more like (15,20,30,60)  ")
+    if required_time_slot.nil? || !(required_time_slot >= 10 && (required_time_slot % 60 == 0 || 60 % required_time_slot == 0))
+      errors.add(:required_time_slot, "must be present and 10 or more like (15, 20, 30, 60)")
     end
   end
 

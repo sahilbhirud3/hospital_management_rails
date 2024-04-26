@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update]
+  before_action :set_user, only: [:show, :update, :change_password]
 
   # GET /users
   # get all users
@@ -28,12 +28,28 @@ class UsersController < ApplicationController
   end
 
   # PUT /users/:id
-  # get all users
+  # Update user's first name and last name
   def update
-    if @user.update(user_params)
+    if @user.update!(user_params_update)
       render json: { message: "User updated successfully" }, status: :ok
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  # PUT /users/:id/change_password
+  # change user password
+  def change_password
+    @user = User.find(params[:id])
+
+    if @user.authenticate(params[:old_password])
+      if @user.update(password: params[:new_password])
+        render json: { message: "Password changed successfully" }, status: :ok
+      else
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Old password is incorrect" }, status: :unprocessable_entity
     end
   end
 
@@ -43,6 +59,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: "User not found" }, status: :not_found
+  end
+
+  def user_params_update
+    params.permit(:first_name, :last_name)
   end
 
   def user_params

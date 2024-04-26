@@ -18,7 +18,7 @@ FactoryBot.define do
     association :user
     association :patient
     doctor { create(:doctor_user) } # Assuming you have a Doctor factory defined
-    slot_start_datetime { DateTime.now }
+    slot_start_datetime { DateTime.parse(DateTime.now.strftime("%Y-%m-%d %H:%M")) }
     slot_end_datetime { DateTime.now + 30.minutes }
     status { "scheduled" }
     appointment_type { "followup" }

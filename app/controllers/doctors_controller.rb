@@ -20,18 +20,22 @@ class DoctorsController < ApplicationController
   #POST /doctors
   #insert doctor and doctors_details
   def create
-    @user = User.new(doctor_params)
-    if @user.save
-      @doctor_detail = @user.build_doctor_detail(doctor_params[:doctor_detail_attributes])
-
-      if @doctor_detail.save
-        render json: { user: @user.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), doctor_detail: @doctor_detail, message: "Doctor registered successfully" }, status: :created
+    ActiveRecord::Base.transaction do
+      @user = User.new(doctor_params)
+      if @user.save
+        @doctor_detail = @user.build_doctor_detail(doctor_params[:doctor_detail_attributes])
+        if @doctor_detail.save
+          render json: { user: @user.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), doctor_detail: @doctor_detail, message: "Doctor registered successfully" }, status: :created
+        else
+          render json: @doctor_detail.errors, status: :unprocessable_entity
+          raise ActiveRecord::Rollback # Rollback the transaction if doctor details saving fails
+        end
       else
-        render json: @doctor_detail.errors, status: :unprocessable_entity
+        render json: @user.errors, status: :unprocessable_entity
       end
-    else
-      render json: @user.errors, status: :unprocessable_entity
     end
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { message: e.message }, status: :unprocessable_entity
   end
 
   #GET /doctors/:id/availableslots

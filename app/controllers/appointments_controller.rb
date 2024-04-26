@@ -16,35 +16,35 @@ class AppointmentsController < ApplicationController
   # POST /appointments
   # to create appointment
   def create
+    # Check if patient_id is provided
     if appointment_params[:patient_id].present?
-      if Appointment.where(patient_id: appointment_params[:patient_id], doctor_id: appointment_params[:doctor_id], status: "scheduled").exists?
-        render json: { error: "Patient Already have scheduled Appointment for given Doctor" }, status: :unprocessable_entity
-        return
-      end
-      if !Ipd.find_by(patient_id: appointment_params[:patient_id]).nil?
-        render json: { error: "Patient Already Admitted" }, status: :unprocessable_entity
-        return
-      end
-
-      if Appointment.where(slot_start_datetime: appointment_params[:slot_start_datetime], doctor_id: appointment_params[:doctor_id]).exists?
-        render json: { error: "Appointment not available for given Doctor" }, status: :unprocessable_entity
-        return
-      end
-
-      @appointment = Appointment.new(appointment_params)
+      patient_id = appointment_params[:patient_id]
     else
+      # If patient_id is not provided, create a new patient
       @patient = Patient.new(patient_params.merge(user_id: appointment_params[:user_id]))
-      if @patient.save
-        if Appointment.where(slot_start_datetime: appointment_params[:slot_start_datetime], doctor_id: appointment_params[:doctor_id]).exists?
-          render json: { error: "Appointment not available for given Doctor" }, status: :unprocessable_entity
-          return
-        end
-        @appointment = Appointment.new(appointment_params.merge(patient_id: @patient.id))
-      else
-        render json: { errors: @patient.errors.full_messages }, status: :unprocessable_entity
-        return
+      unless @patient.save
+        return render json: { errors: @patient.errors.full_messages }, status: :unprocessable_entity
       end
+      patient_id = @patient.id
     end
+
+    # Check if patient already has a scheduled appointment for the given doctor today
+    if Appointment.where(patient_id: patient_id, doctor_id: appointment_params[:doctor_id], status: "scheduled", slot_start_datetime: Date.today.all_day).exists?
+      return render json: { error: "Patient already has a scheduled appointment for the given doctor" }, status: :unprocessable_entity
+    end
+
+    # Check if patient is already admitted
+    if Ipd.find_by(patient_id: patient_id, status: "admitted").present?
+      return render json: { error: "Patient is already admitted" }, status: :unprocessable_entity
+    end
+
+    # Check if appointment slot is available for the given doctor
+    if Appointment.where(slot_start_datetime: DateTime.parse("#{appointment_params[:slot_start_datetime]} IST"), doctor_id: appointment_params[:doctor_id]).exists?
+      return render json: { error: "Appointment not available for the given doctor" }, status: :unprocessable_entity
+    end
+
+    # Create new appointment
+    @appointment = Appointment.new(appointment_params.merge(patient_id: patient_id))
 
     if @appointment.save
       render json: @appointment.as_json(except: [:created_at, :updated_at]), status: :created

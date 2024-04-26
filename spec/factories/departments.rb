@@ -10,7 +10,7 @@
 #
 FactoryBot.define do
   factory :department do
-    name { "Accident" }
+    name { Faker::Company.department }
     address { "2nd Floor" }
   end
 end

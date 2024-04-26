@@ -24,7 +24,10 @@ class PatientsController < ApplicationController
   #GET /patients/user/:user_id
   def get_all_patients_for_user
     patients = Patient.where(user_id: params[:user_id])
-    render json: [] if patients.empty?
+    if patients.empty?
+      render json: []
+      return
+    end
     render json: patients.as_json(only: [:id, :first_name, :last_name, :gender, :contact])
   end
 

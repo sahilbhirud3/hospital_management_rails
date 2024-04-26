@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   get "/beds/ward_types", to: "beds#get_ward_types"
 
   get "/patients/user/:user_id", to: "patients#get_all_patients_for_user"
+
+  put "/users/:id/change_password", to: "users#change_password"
   resources :departments
   resources :patients
   resources :users

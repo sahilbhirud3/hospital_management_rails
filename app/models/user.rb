@@ -23,7 +23,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :contact, presence: true, uniqueness: true, length: { is: 10 }, numericality: { only_integer: true }
-  validates :password, presence: true, confirmation: true
+  validates :password, confirmation: true
   validates :role, presence: true, inclusion: { in: %w(user doctor admin) }
 
   has_one :doctor_detail, dependent: :destroy
@@ -36,6 +36,10 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     super(options.merge({ except: [:password, :password_digest] }))
+  end
+
+  def authenticate(password)
+    BCrypt::Password.new(password_digest) == password
   end
 
   private
