@@ -3,8 +3,12 @@ class DoctorsController < ApplicationController
   #GET /doctors
   #all doctors
   def index
-    @doctors = User.get_doctors.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role])
-    render json: @doctors, status: :ok
+    @doctors = User.get_doctors
+    @doctors_with_details=User.get_doctors.joins(:doctor_detail)
+    respond_to do |format|
+      format.json { render json: @doctors.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), status: :ok }
+      format.html { @doctors }
+    end
   end
 
   #GET /doctors/department/:deptid
@@ -14,7 +18,10 @@ class DoctorsController < ApplicationController
     result = @doctor_names.map do |user_id, first_name, last_name|
       { id: user_id, first_name: first_name, last_name: last_name }
     end
-    render json: result, status: :ok
+    respond_to do |format|
+      format.json { render json:result }
+      format.html { @doctor_names }
+    end
   end
 
   #POST /doctors
@@ -51,12 +58,17 @@ class DoctorsController < ApplicationController
     render json: { error: "Doctor not found" }, status: :not_found
   end
 
+  def dashboard
+
+  end
+
   #GET /doctors/:id
   def show
-    doctors_with_users = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
-    raise ActiveRecord::RecordNotFound if doctors_with_users.nil?
+    @doctor = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
+    @user=User.find(params[:id])
+    raise ActiveRecord::RecordNotFound if @doctor.nil?
 
-    doctors_with_users_json = doctors_with_users.as_json(
+    doctor_json = @doctor.as_json(
       include: {
         user: {
           only: [:id, :first_name, :last_name, :email, :contact],
@@ -67,7 +79,10 @@ class DoctorsController < ApplicationController
       },
       only: [:regno, :start_time, :end_time, :required_time_slot, :qualification],
     )
-    render json: doctors_with_users_json, status: :ok
+    respond_to do |format|
+      format.json { render json: doctor_json, status: :ok }
+      format.html { @doctor }
+    end
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Doctor not found" }, status: :not_found
   end

@@ -1,0 +1,12 @@
+h2 Select Department
+= form_tag("/doctors/department/:deptid", method: :get, id: 'department-form') do
+  select#department-select(name="deptid")
+    - @departments.each do |department|
+      option(value=department.id)= department.name
+  = submit_tag "Show Doctors"
+
+- if @doctors_names
+  h2 Doctors in Selected Department
+  ul#doctor-list
+    - @doctors.each do |doctor|
+      li = doctor

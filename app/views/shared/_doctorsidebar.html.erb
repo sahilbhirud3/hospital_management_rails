@@ -1,0 +1,75 @@
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h6>Hi
+                <%="#{current_user.first_name} #{current_user.last_name} !"%></h6>
+            <h6>Doctor Dashboard</h6>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li class="">
+                <a href="#homeSubmenu" data-toggle="collapse"
+                    aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-home"></i> User
+                </a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#"><i class="fas fa-users"></i> All Users</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-home"></i> Home 2</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-home"></i> Home 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse"
+                    aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-file"></i> Pages
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#"><i class="fas fa-file"></i> Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-file"></i> Page 2</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-file"></i> Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-images"></i> Portfolio</a>
+            </li>
+            <li>
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a href="https://bootstrapious.com/p/bootstrap-sidebar"
+                    class="article">Back to article</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        <%=yield %>
+    </div>
+</div>
+
+<!-- jQuery, Popper.js, Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

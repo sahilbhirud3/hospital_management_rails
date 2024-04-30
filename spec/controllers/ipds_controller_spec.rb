@@ -4,7 +4,7 @@ RSpec.describe IpdsController, type: :controller do
   let!(:patient) { create(:patient) }
   let!(:patient1) { create(:patient) }
   let!(:bed) { create(:bed) }
-  let!(:bed1) { create(:bed) }
+  let!(:bed1) { create(:bed,ward_type:"ICU") }
   let!(:department) { create(:department) }
   let!(:ipd) { create(:ipd, patient: patient, bed: bed, department: department) }
 
@@ -12,6 +12,35 @@ RSpec.describe IpdsController, type: :controller do
     it "returns a successful response" do
       get :index
       expect(response).to be_successful
+    end
+
+    context "with filters" do
+      it "returns a successful response with status filter" do
+        get :index, params: { status: "admitted" }
+        expect(response).to be_successful
+        expect(response.body).to include("admitted")
+      end
+      it "returns a successful response with status filter" do
+        ipd = create(:ipd, status: "discharged")
+        get :index, params: { status: "discharged" }
+        expect(response).to be_successful
+        expect(response.body).to include("discharged")
+      end
+
+      it "returns a successful response with department_id filter" do
+        department1 = create(:department)
+        ipd = create(:ipd, department: department1)
+        get :index, params: { department_id: department.id }
+        expect(response).to be_successful
+
+      end
+
+      it "returns a successful response with ward_type filter" do
+        ipd = create(:ipd,bed:bed1)
+        get :index, params: { ward_type: "ICU" }
+        expect(response).to be_successful
+        expect(response.body).to include("ICU")
+      end
     end
   end
 

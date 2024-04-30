@@ -10,6 +10,9 @@ Rails.application.configure do
     Bullet.add_footer    = true
   end
 
+
+
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -17,7 +20,7 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
 
-  #bullet enabled 
+  #bullet enabled
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true

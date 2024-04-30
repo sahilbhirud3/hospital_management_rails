@@ -14,6 +14,9 @@
 #  password_digest :string
 #
 class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   before_validation :capitalize_names
   before_save :encrypt_password
   before_validation :set_default_role, on: :create
@@ -28,11 +31,15 @@ class User < ApplicationRecord
 
   has_one :doctor_detail, dependent: :destroy
   has_many :patients
+  # has_many :devices, dependent: :destroy
 
   accepts_nested_attributes_for :doctor_detail
 
   scope :get_doctors, -> { where(role: "doctor") }
   scope :get_users, -> { where(role: "user") }
+
+
+  devise :database_authenticatable, :registerable, :timeoutable,:recoverable, :rememberable, :validatable
 
   def as_json(options = {})
     super(options.merge({ except: [:password, :password_digest] }))

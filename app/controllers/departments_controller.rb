@@ -4,7 +4,11 @@ class DepartmentsController < ApplicationController
   # GET /departments
   def index
     @departments = Department.all
-    render json: @departments.as_json(only: [:id, :name, :address]), status: :ok
+
+    respond_to do |format|
+      format.json {render json: @departments.as_json(only: [:id, :name, :address]), status: :ok}
+      format.html { @departments }
+    end
   end
 
   # GET /departments/1

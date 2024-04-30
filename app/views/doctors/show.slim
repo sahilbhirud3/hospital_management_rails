@@ -1,0 +1,35 @@
+- if @doctor
+  .container
+    .row
+      .col-md-6
+        h2 Doctor Details
+        dl.dl-horizontal
+          dt Registration Number
+          dd= @doctor.regno
+          dt Start Time
+          dd= @doctor.start_time.strftime("%H : %M")
+          dt End Time
+          dd= @doctor.end_time.strftime("%H : %M")
+          dt Required Time Slot
+          dd= @doctor.required_time_slot.to_s.concat(" min")
+          dt Qualification
+          dd= @doctor.qualification
+      .col-md-6
+        h2 User Details
+        dl.dl-horizontal
+          dt First Name
+          dd= @doctor.user.first_name
+          dt Last Name
+          dd= @doctor.user.last_name
+          dt Email
+          dd= @doctor.user.email
+          dt Contact
+          dd= @doctor.user.contact
+    .row
+      .col-md-12
+        h2 Department Details
+        dl.dl-horizontal
+          dt Department Name
+          dd= @doctor.department.name
+- else
+  p Doctor not found

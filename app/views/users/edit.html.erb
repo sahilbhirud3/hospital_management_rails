@@ -1,0 +1,14 @@
+<h1>Edit User</h1>
+<%= form_with model: @user, url: user_path(@user), method: :put do |form| %>
+  <div>
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+  <div>
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+  <div>
+    <%= form.submit 'Update' %>
+  </div>
+<% end %>

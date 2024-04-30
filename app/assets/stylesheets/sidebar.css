@@ -1,0 +1,80 @@
+.wrapper {
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    width: 250px;
+    background: rgba(115, 95, 234, 0.9); /* Semi-transparent purple */
+    color: #fff;
+    transition: all 0.3s;
+    overflow-y: auto; /* Enable scrolling for smaller screens */
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: rgba(93, 76, 166, 0.9); /* Semi-transparent darker purple */
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(115, 95, 234, 0.5); /* Semi-transparent border */
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar ul li a:hover {
+    background: rgba(93, 76, 166, 0.9); /* Semi-transparent darker purple on hover */
+    color: #fff;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    background: rgba(93, 76, 166, 0.9); /* Semi-transparent darker purple for active links */
+}
+
+#sidebar ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: rgba(115, 95, 234, 0.9); /* Semi-transparent purple for nested links */
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+a.download {
+    background: #fff;
+    color: rgba(115, 95, 234, 0.9); /* Semi-transparent purple for download link */
+}
+
+a.article,
+a.article:hover {
+    background: rgba(93, 76, 166, 0.9) !important; /* Semi-transparent darker purple for article link */
+    color: #fff !important;
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}

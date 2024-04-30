@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  get "welcome/index"
+  devise_for :users
+  get 'users/new_user', to: 'users#new_user' ,as: :new_user
+  post 'users/create_user', to: 'users#create_user', as: :create_user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -6,11 +11,11 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "welcome#index"
   post "/doctors", to: "doctors#create"
   get "/doctors", to: "doctors#index"
-  get "/doctors/:id", to: "doctors#show"
-  get "/doctors/department/:deptid", to: "doctors#get_all_doctors_from_department"
+  get "/doctors/:id", to: "doctors#show", as: :show_doctors
+  get "/doctors/department/:deptid", to: "doctors#get_all_doctors_from_department", as: :doctors_department
   get "/doctors/:id/availableslots", to: "doctors#todays_available_appointment_slot_for_doctor"
 
   get "/appointments/doctor/:doctor_id/all", to: "appointments#get_all_appointments_for_doctor"
@@ -33,6 +38,14 @@ Rails.application.routes.draw do
   get "/patients/user/:user_id", to: "patients#get_all_patients_for_user"
 
   put "/users/:id/change_password", to: "users#change_password"
+
+  # For user dashboard
+  get "/user_dashboard", to: "users#dashboard", as: "user_dashboard"
+
+  # For admin dashboard
+  get "/admin_dashboard", to: "admin#dashboard", as: "admin_dashboard"
+  get "/doctor_dashboard", to: "doctor#dashboard", as: "doctor_dashboard"
+
   resources :departments
   resources :patients
   resources :users
