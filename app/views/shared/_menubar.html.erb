@@ -1,7 +1,7 @@
 
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #b9aef5;">
         <div class="container">
             <!-- Brand/logo -->
             <a class="navbar-brand" href="<%= root_path %>">Home</a>
@@ -20,7 +20,9 @@
                     <% if user_signed_in? %>
                     <!-- Render logout button -->
                     <li class="nav-item">
-                        <%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }, class:"btn btn-danger" %>
+                        <%= link_to 'Logout', destroy_user_session_path,class:"btn btn-danger" %>
+                         <%#<%= link_to 'Logout', destroy_user_session_path, data: { turbo_method: :delete }, class:"btn btn-danger" %>
+
                     </li>
                     <% else %>
                     <!-- Render sign-in button -->

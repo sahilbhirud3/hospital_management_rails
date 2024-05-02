@@ -1,16 +1,28 @@
 class IpdsController < ApplicationController
-  before_action :set_ipd, only: [:show, :discharged_ipd_patient]
-
+  before_action :set_ipd, only: [:show, :discharged_ipd_patient, :discharge]
+  before_action :authenticate_user!
+  before_action :authorize_ipd
   #GET /ipds
-  #get all ipds
   def index
-    @ipds = Ipd.joins(:patient, :department, :bed)
     conditions = {}
     conditions[:status] = params[:status] if params[:status].present?
     conditions[:department_id] = params[:department_id] if params[:department_id].present?
     conditions["beds.ward_type"] = params[:ward_type] if params[:ward_type].present?
-    @ipds = @ipds.where(conditions).order(admission_datetime: :desc).select(:id, :patient_id, "patients.first_name", "patients.last_name", "patients.gender", :department_id, "departments.name", :bed_id, "beds.bed_no", "beds.ward_type", :treatment_description, :status)
-    render json: @ipds.as_json(except: [:created_at, :updated_at]), status: :ok
+    @ipds = Ipd.eager_load(:patient, :department, :bed)
+               .where(conditions)
+               .where("patients.first_name ILIKE ? OR patients.last_name ILIKE ?", "%#{params[:patient_name]}%", "%#{params[:patient_name]}%")
+               .order(admission_datetime: :desc)
+               .select(:id, :patient_id, "patients.first_name", "patients.last_name", "patients.gender", :department_id, "departments.name", :bed_id, "beds.bed_no", "beds.ward_type", :treatment_description, :admission_datetime, :status)
+               .paginate(page: params[:page], per_page: 10)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @ipds.as_json(except: [:created_at, :updated_at]), status: :ok }
+    end
+  end
+
+  def new
+    @ipd = Ipd.new
   end
 
   #PUT /ipds/:id
@@ -29,56 +41,88 @@ class IpdsController < ApplicationController
       treatment_description: @ipd.treatment_description,
       status: @ipd.status,
     }
-    render json: ipd_json, status: :ok
+    respond_to do |format|
+      format.html
+      format.json { render json: ipd_json, status: :ok }
+    end
   end
 
   #POST /ipds
   #Create new ipd record
   def create
-
     # Check if the patient is already admitted
     if Ipd.where(patient_id: ipd_params[:patient_id], status: "admitted").exists?
-      render json: { error: "Patient is already admitted" }, status: :unprocessable_entity
+      respond_to do |format|
+        format.json { render json: { error: "Patient is already admitted" }, status: :unprocessable_entity }
+        format.html { redirect_to root_path, alert: "Patient is already admitted" }
+      end
       return
     end
+
     # Check if the bed is available
     bed = Bed.find_by(id: ipd_params[:bed_id])
     if bed.nil? || bed.status == "acquired"
-      render json: { error: "Bed is not available" }, status: :unprocessable_entity
+      respond_to do |format|
+        format.json { render json: { error: "Bed is not available" }, status: :unprocessable_entity }
+        format.html { redirect_to root_path, alert: "Bed is not available" }
+      end
       return
     end
+
     # Check admission datetime
     admission_datetime = ipd_params[:admission_datetime].presence || DateTime.now
-
-    if admission_datetime > DateTime.now
-      render json: { error: "Admission date cannot be in the future" }, status: :unprocessable_entity
+    if admission_datetime > DateTime.now + 2.minutes
+      respond_to do |format|
+        format.json { render json: { error: "Admission date cannot be in the future" }, status: :unprocessable_entity }
+        format.html { redirect_to root_path, alert: "Admission date cannot be in the future" }
+      end
       return
     end
 
     # Create IPD record
-    @ipd = Ipd.new(ipd_params.merge(admission_datetime: admission_datetime, status: "admitted"))
+    @ipd = Ipd.create!(ipd_params.merge(admission_datetime: admission_datetime, status: "admitted"))
     if @ipd.save
       bed.update(status: "acquired")
-      render json: { ipd: @ipd.as_json(except: [:created_at, :updated_at]), message: "IPD record created" }, status: :created
+      respond_to do |format|
+        format.json { render json: { ipd: @ipd.as_json(except: [:created_at, :updated_at]), message: "IPD record created" }, status: :created }
+        format.html { redirect_to @ipd, notice: "IPD record created" }
+      end
     else
-      render json: { error: @ipd.errors.full_messages.join(", ") }, status: :unprocessable_entity
+      respond_to do |format|
+        format.json { render json: { error: @ipd.errors.full_messages.join(", ") }, status: :unprocessable_entity }
+        format.html { render :new }
+      end
     end
+  end
+
+  def discharge
   end
 
   #PUT /ipds/discharge/:id
   def discharged_ipd_patient
     if @ipd.status == "discharged"
-      render json: { error: "Ipd Already Discharged" }, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { redirect_to ipds_path, alert: "IPD already discharged" }
+        format.json { render json: { error: "IPD already discharged" }, status: :unprocessable_entity }
+      end
       return
     end
+
     @ipd.discharge_datetime = DateTime.now
     @ipd.treatment_description = discharge_ipd_params[:treatment_description]
     @ipd.status = "discharged"
+
     if @ipd.save
-      Bed.find(@ipd.bed_id).update(status: "vaccant")
-      render json: { ipd: @ipd.as_json(except: [:created_at, :updated_at]), message: "IPD patient Discharged!" }, status: :accepted
+      Bed.find(@ipd.bed_id).update(status: "vacant")
+      respond_to do |format|
+        format.html { redirect_to ipds_path, notice: "IPD patient discharged!" }
+        format.json { render json: { ipd: @ipd.as_json(except: [:created_at, :updated_at]), message: "IPD patient discharged!" }, status: :accepted }
+      end
     else
-      render json: @ipd.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :discharge }
+        format.json { render json: @ipd.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -115,7 +159,7 @@ class IpdsController < ApplicationController
   end
 
   def ipd_params
-    params.require(:ipd).permit(:patient_id, :bed_id, :department_id, :treatment_description, :admission_datetime)
+    params.require(:ipd).permit(:patient_id, :bed_id, :department_id, :admission_datetime)
   end
 
   def ward_type_params
@@ -124,5 +168,9 @@ class IpdsController < ApplicationController
 
   def discharge_ipd_params
     params.permit(:treatment_description)
+  end
+
+  def authorize_ipd
+    authorize Ipd
   end
 end

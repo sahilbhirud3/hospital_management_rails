@@ -1,0 +1,14 @@
+.container
+  .row.justify-content-center
+    .col-md-6
+      h2.mb-4 New Treatment
+      = form_for [@treatment], html: { class: 'needs-validation', novalidate: true } do |form|
+        = form.hidden_field :ipd_id, value: @ipd.id
+        .form-group
+          = form.label :description, class: 'form-label'
+          = form.text_field :description, class: 'form-control', placeholder: 'Description', required: true
+          = form.check_box :_destroy, { class: 'form-check-input', style: 'display: none' }
+        .form-group
+          = form.label :datetime, class: 'form-label'
+          = form.datetime_field :datetime, class: 'form-control', required: true
+        = form.submit 'Create Treatment', class: 'btn btn-primary mt-3'

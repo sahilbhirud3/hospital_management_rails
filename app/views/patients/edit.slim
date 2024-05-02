@@ -1,0 +1,23 @@
+h1 Edit Patient
+
+= form_for @patient, url: patient_path(@patient), method: :patch do |f|
+  - if @patient.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @patient.errors.full_messages.each do |msg|
+          li = msg
+  .form-group
+    = f.label :first_name
+    = f.text_field :first_name, class: "form-control"
+  .form-group
+    = f.label :last_name
+    = f.text_field :last_name, class: "form-control"
+  .form-group
+    = f.label :gender
+    = f.select :gender, options_for_select(["Male", "Female", "Other"]), {}, class: "form-control"
+  .form-group
+    = f.label :contact
+    = f.text_field :contact, class: "form-control"
+  = f.submit 'Update patient', class: 'btn btn-primary'
+=link_to 'Back', :back, class: 'btn btn-secondary'        

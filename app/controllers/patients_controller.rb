@@ -1,34 +1,64 @@
 class PatientsController < ApplicationController
-  before_action :set_patient, only: [:show]
-  #GET /patients
+  before_action :set_patient, only: [:show, :edit, :update]
+  before_action :authenticate_user!
+  before_action :authorize_patient
+  # GET /patients
   def index
-    @patients = Patient.all
-    render json: @patients.as_json(except: [:created_at, :updated_at]), status: :ok
+    @patients = Patient.all.paginate(page: params[:page], per_page: 10)
+    respond_to do |format|
+      format.html
+      format.json { render json: @patients.as_json(except: [:created_at, :updated_at]), status: :ok }
+    end
   end
 
-  #POST /patients
+  def edit
+  end
+
+  def new
+    @patient = Patient.new
+  end
+
+  # POST /patients
   def create
     @patient = Patient.new(patient_params)
-    if @patient.save
-      render json: { patient: @patient.as_json(except: [:created_at, :updated_at]), message: "Patient Data Registerd Sccessfully." }, status: :created
-    else
-      render json: @patient.errors, status: :unprocessable_entity
+    respond_to do |format|
+      if @patient.save
+        format.html { redirect_to @patient, notice: "Patient data registered successfully." }
+        format.json { render json: { patient: @patient.as_json(except: [:created_at, :updated_at]), message: "Patient data registered successfully." }, status: :created }
+      else
+        format.html { render :new }
+        format.json { render json: @patient.errors, status: :unprocessable_entity }
+      end
     end
   end
 
-  #PUT /patients/:id
+  # GET /patients/:id
   def show
-    render json: @patient.as_json(except: [:created_at, :updated_at]), status: :ok
+    respond_to do |format|
+      format.html
+      format.json { render json: @patient.as_json(except: [:created_at, :updated_at]), status: :ok }
+    end
   end
 
-  #GET /patients/user/:user_id
+  # GET /patients/user/:user_id
   def get_all_patients_for_user
     patients = Patient.where(user_id: params[:user_id])
-    if patients.empty?
-      render json: []
-      return
+    respond_to do |format|
+      format.json { render json: patients.as_json(only: [:id, :first_name, :last_name, :gender, :contact]) }
     end
-    render json: patients.as_json(only: [:id, :first_name, :last_name, :gender, :contact])
+  end
+
+  # PATCH/PUT /patients/1
+  def update
+    respond_to do |format|
+      if @patient.update(patient_params)
+        format.html { redirect_to @patient, notice: "Patient was successfully updated." }
+        format.json { render json: { patient: @patient.as_json(only: [:id, :name, :address]), message: "Patient successfully updated." }, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: @patient.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
@@ -36,10 +66,17 @@ class PatientsController < ApplicationController
   def set_patient
     @patient = Patient.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: "Patient Record not found" }, status: :not_found
+    respond_to do |format|
+      format.html { redirect_to patients_path, alert: "Patient record not found." }
+      format.json { render json: { error: "Patient record not found" }, status: :not_found }
+    end
   end
 
   def patient_params
     params.require(:patient).permit(:first_name, :last_name, :birthdate, :gender, :contact, :user_id)
+  end
+
+  def authorize_patient
+    authorize Patient
   end
 end

@@ -12,13 +12,13 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 gem "devise"
-gem 'bootstrap', '~> 5.1', '>= 5.1.3'
-gem 'sassc-rails', '~> 2.1'
-gem 'slim'
-gem 'slim-rails'
-gem 'rails_admin'
-
-
+gem "bootstrap", "~> 5.1", ">= 5.1.3"
+gem "sassc-rails", "~> 2.1"
+gem "slim"
+gem "slim-rails"
+gem "rails_admin"
+gem "will_paginate-bootstrap4"
+gem "pundit"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"

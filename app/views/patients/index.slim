@@ -1,0 +1,23 @@
+h1 Patients List
+= link_to "New", new_patient_path, class: "btn btn-success"
+table.table.table-striped.table-bordered
+  thead.thead-dark
+    tr
+      th ID
+      th First Name
+      th Last Name
+      th Gender
+      th Contact
+      th Actions
+  tbody
+    - @patients.each do |patient|
+      tr
+        td= patient.id
+        td= patient.first_name
+        td= patient.last_name
+        td= patient.gender
+        td= patient.contact
+        td
+          = link_to "Show", patient_path(patient), class: "btn btn-primary"
+          = link_to "Edit", edit_patient_path(patient), class: "btn btn-secondary"
+= will_paginate @patients, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

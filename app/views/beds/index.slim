@@ -1,0 +1,40 @@
+.container
+  h1 Beds
+  p
+    = link_to "New", new_bed_path, class: "btn btn-success"
+  
+  = form_tag beds_path, method: :get, class: "form-inline mb-3" do
+    .form-group.mb-2
+      label for="status" Status:
+      select.form-control#status name="status"
+        option value="" All
+        option value="vaccant" Vaccant
+        option value="acquired" Acquired 
+        option value="unavailable" Unavailable 
+    
+    .form-group.mb-2   
+      label for="ward_type" Ward Type:
+      select.form-control#ward_type name="ward_type"
+        option value="" All
+        -Bed::WARD_TYPES.each do |type|
+          option value="#{type}" #{type}
+    = submit_tag "Search", class: "btn btn-primary"
+
+  table.table.table-striped.table-bordered
+    thead.thead-dark
+      tr
+        th ID
+        th Ward Type
+        th Bed No
+        th Status
+        th Actions
+    tbody
+      - @beds.each do |bed|
+        tr
+          td = bed.id
+          td = bed.ward_type
+          td = bed.bed_no
+          td = bed.status
+          td
+            = link_to "Edit", edit_bed_path(bed), class: "btn btn-primary btn-sm"
+= will_paginate @beds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

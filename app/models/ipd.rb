@@ -14,6 +14,8 @@
 #  updated_at            :datetime         not null
 #
 class Ipd < ApplicationRecord
+  include Kaminari::PageScopeMethods
+  include Kaminari::ConfigurationMethods
   belongs_to :patient
   belongs_to :department
   belongs_to :bed

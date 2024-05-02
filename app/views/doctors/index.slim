@@ -3,7 +3,7 @@ h1 Doctors List
 table.table.table-bordered#doctor-table
   thead
     tr
-      th Sr. No
+      th ID
       th First Name
       th Last Name
       th Contact
@@ -12,9 +12,10 @@ table.table.table-bordered#doctor-table
   tbody
     - @doctors_with_details.each_with_index do |doctor, index|
       tr
-        td= index + 1
+        td= doctor.id
         td= doctor.first_name
         td= doctor.last_name
         td= doctor.contact
         td= doctor.email
         td= link_to "Show", show_doctors_path(doctor), class: "btn btn-primary"
+= will_paginate @doctors_with_details, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

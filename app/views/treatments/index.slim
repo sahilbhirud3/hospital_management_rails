@@ -1,0 +1,14 @@
+h1 Treatments
+table
+  thead
+    tr
+      th ID
+      th Description
+      th Date and Time
+  tbody
+    - @treatments.each do |treatment|
+      tr
+        td= treatment.id
+        td= treatment.description
+        td= treatment.datetime
+= will_paginate @treatments

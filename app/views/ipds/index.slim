@@ -1,0 +1,57 @@
+.container
+  h1 IPDs
+  = link_to "New Admission", new_ipd_path, class: "btn btn-success"
+  = form_tag ipds_path, method: :get do
+    .form-row
+      .form-group.col-md-3
+        label for="status" Status:
+        select.form-control#status name="status"
+          option value="" All
+          option value="admitted" Admitted
+          option value="discharged" Discharged
+      .form-group.col-md-3
+        label for="department" Department:
+        select.form-control#department name="department_id"
+          option value="" All
+          - Department.all.each do |department|
+            option value="#{department.id}" #{department.name}
+      .form-group.col-md-3
+        label for="ward_type" Ward Type:
+        select.form-control#ward_type name="ward_type"
+          option value="" All
+          - Bed::WARD_TYPES.each do |type|
+            option value="#{type}" #{type}
+      .form-group.col-md-3
+        label for="patient_name" Patient Name:
+        input.form-control#patient_name name="patient_name" type="text" value=params[:patient_name]
+      .form-group.col-md-3
+        button.btn.btn-primary.mt-4 type="submit" Search
+  table.table.table-striped.table-bordered
+    thead.thead-dark
+      tr
+        th ID
+        th Patient ID
+        th Patient Name
+        th Department
+        th Ward
+        th Bed No
+        th Admission DateTime
+        th Status
+        th Actions 
+    tbody
+      - @ipds.each do |ipd|
+        tr
+          td = ipd.id
+          td = ipd.patient_id
+          td = "#{ipd.patient.first_name} #{ipd.patient.last_name}"
+          td = ipd.department.name
+          td = ipd.ward_type
+          td = ipd.bed.bed_no
+          td = ipd.admission_datetime.strftime("%Y-%m-%d %H:%M")
+          td = ipd.status
+          td 
+            = link_to "Show", ipd_path(ipd), class: "btn btn-primary"
+            - unless ipd.status == "discharged"
+              = link_to "Discharge", view_discharge_ipd_path(ipd), method: :get, class: "btn btn-danger"
+
+  = will_paginate @ipds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

@@ -1,0 +1,20 @@
+h1 Add Bed
+= form_for @bed, url: beds_path do |f|
+  - if @bed.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @bed.errors.full_messages.each do |msg|
+          li = msg
+  .form-group
+    = f.label :bed_no
+    = f.text_field :bed_no, class: "form-control",required: true
+  .form-group
+    = f.label :ward_type
+    = f.select :ward_type, options_for_select(Bed::WARD_TYPES), {}, class: "form-control",required: true
+  .form-group
+    = f.label :status
+    = f.select :status, options_for_select(["vaccant","unavailable"]), {}, class: "form-control",required: true
+
+  .form-group
+    = f.submit "Submit", class: "btn btn-primary"

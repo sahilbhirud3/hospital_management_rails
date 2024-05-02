@@ -1,12 +1,22 @@
-h2 Select Department
-= form_tag("/doctors/department/:deptid", method: :get, id: 'department-form') do
-  select#department-select(name="deptid")
-    - @departments.each do |department|
-      option(value=department.id)= department.name
-  = submit_tag "Show Doctors"
+h1 All Departments
+= link_to "New", new_department_path, class: "btn btn-success"
+br
 
-- if @doctors_names
-  h2 Doctors in Selected Department
-  ul#doctor-list
-    - @doctors.each do |doctor|
-      li = doctor
+table.table.table-striped.table-bordered
+  thead.thead-dark
+    tr
+      th ID
+      th Name
+      th Address
+      th Actions
+  tbody
+    - @departments.each do |department|
+      tr
+        td= department.id
+        td= department.name
+        td= department.address
+        td
+          = link_to "Show", department_path(department), class: "btn btn-primary"
+          
+          = link_to "Edit", edit_department_path(department), class: "btn btn-secondary"
+= will_paginate @departments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

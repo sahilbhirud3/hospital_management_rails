@@ -1,0 +1,18 @@
+h1 New Department
+= form_for @department, url: departments_path do |f|
+  - if @department.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @department.errors.full_messages.each do |msg|
+          li = msg
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control',required:true
+
+  .form-group
+    = f.label :addresss
+    = f.text_field :address, class: 'form-control',required:true
+
+  = f.submit 'Create Department', class: 'btn btn-primary'

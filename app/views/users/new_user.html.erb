@@ -1,41 +1,62 @@
-<!-- app/views/users/new_user.html.erb -->
-<h1>Create a New Doctor User</h1>
+<h1>Add a New Doctor User</h1>
 
-<%= form_for @user, url: create_user_path do |f| %>
-  <%= f.label :first_name %>
-  <%= f.text_field :first_name %>
+<%= form_for @user, url: create_user_path, html: { class: "form" } do |f| %>
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
 
-  <%= f.label :last_name %>
-  <%= f.text_field :last_name %>
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
 
-  <%= f.label :email %>
-  <%= f.email_field :email %>
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
 
-  <%= f.label :contact %>
-  <%= f.text_field :contact %>
+  <div class="form-group">
+    <%= f.label :contact %>
+    <%= f.text_field :contact, class: "form-control" %>
+  </div>
 
-  <%= f.label :password %>
-  <%= f.password_field :password %>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: "form-control" %>
+  </div>
 
   <%= f.fields_for :doctor_detail do |doc_detail_fields| %>
-    <%= doc_detail_fields.label :regno %>
-    <%= doc_detail_fields.text_field :regno %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :regno %>
+      <%= doc_detail_fields.text_field :regno, class: "form-control" %>
+    </div>
 
-    <%= doc_detail_fields.label :department_id %>
-    <%= doc_detail_fields.collection_select :department_id, Department.all, :id, :name %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :department_id %>
+      <%= doc_detail_fields.collection_select :department_id, Department.all, :id, :name, { prompt: "Select Department" }, class: "form-control" %>
+    </div>
 
-    <%= doc_detail_fields.label :start_time %>
-    <%= doc_detail_fields.time_field :start_time %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :start_time %>
+      <%= doc_detail_fields.time_field :start_time, class: "form-control" %>
+    </div>
 
-    <%= doc_detail_fields.label :end_time %>
-    <%= doc_detail_fields.time_field :end_time %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :end_time %>
+      <%= doc_detail_fields.time_field :end_time, class: "form-control" %>
+    </div>
 
-    <%= doc_detail_fields.label :required_time_slot %>
-    <%= doc_detail_fields.number_field :required_time_slot %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :required_time_slot %>
+      <%= doc_detail_fields.number_field :required_time_slot, class: "form-control" %>
+    </div>
 
-    <%= doc_detail_fields.label :qualification %>
-    <%= doc_detail_fields.text_field :qualification %>
+    <div class="form-group">
+      <%= doc_detail_fields.label :qualification %>
+      <%= doc_detail_fields.text_field :qualification, class: "form-control" %>
+    </div>
   <% end %>
 
-  <%= f.submit "Create User" %>
+  <%= f.submit "Add Doctor", class: "btn btn-primary" %>
 <% end %>

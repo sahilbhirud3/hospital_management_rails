@@ -4,7 +4,7 @@ class DoctorsController < ApplicationController
   #all doctors
   def index
     @doctors = User.get_doctors
-    @doctors_with_details=User.get_doctors.joins(:doctor_detail)
+    @doctors_with_details = User.get_doctors.joins(:doctor_detail).paginate(page: params[:page], per_page: 10)
     respond_to do |format|
       format.json { render json: @doctors.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), status: :ok }
       format.html { @doctors }
@@ -19,7 +19,7 @@ class DoctorsController < ApplicationController
       { id: user_id, first_name: first_name, last_name: last_name }
     end
     respond_to do |format|
-      format.json { render json:result }
+      format.json { render json: result }
       format.html { @doctor_names }
     end
   end
@@ -59,13 +59,12 @@ class DoctorsController < ApplicationController
   end
 
   def dashboard
-
   end
 
   #GET /doctors/:id
   def show
     @doctor = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
-    @user=User.find(params[:id])
+    @user = User.find(params[:id])
     raise ActiveRecord::RecordNotFound if @doctor.nil?
 
     doctor_json = @doctor.as_json(

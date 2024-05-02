@@ -1,0 +1,12 @@
+h1 Treatment Details
+p
+  strong ID:
+  = @treatment.id
+p
+  strong Description:
+  = @treatment.description
+p
+  strong Date and Time:
+  = @treatment.datetime
+
+= link_to "Back", treatments_path, class: "btn btn-primary"

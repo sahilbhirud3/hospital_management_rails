@@ -1,0 +1,26 @@
+= form_for @patient, url: patients_path do |f|
+  - if @patient.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @patient.errors.full_messages.each do |msg|
+          li = msg
+  .form-group
+    = f.label :first_name
+    = f.text_field :first_name, class: "form-control",required: true
+  .form-group
+    = f.label :last_name
+    = f.text_field :last_name, class: "form-control",required: true
+  .form-group
+    = f.label :gender
+    = f.select :gender, options_for_select(["Male", "Female", "Other"]), {}, class: "form-control"
+  .form-group
+    = f.label :birthdate
+    = f.date_field :birthdate, class: "form-control",required: true, min: (Date.today - 120.years), max: Date.today
+  .form-group
+    = f.label :contact
+    = f.text_field :contact, class: "form-control"
+    = f.hidden_field :user_id, value: current_user.id
+
+  .form-group
+    = f.submit "Submit", class: "btn btn-primary"

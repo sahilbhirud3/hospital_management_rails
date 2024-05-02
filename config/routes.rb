@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   get "welcome/index"
   devise_for :users
-  get 'users/new_user', to: 'users#new_user' ,as: :new_user
-  post 'users/create_user', to: 'users#create_user', as: :create_user
+  get "users/new_user", to: "users#new_user", as: :new_user
+  post "users/create_user", to: "users#create_user", as: :create_user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -24,11 +24,14 @@ Rails.application.routes.draw do
   put "/appointments/:id/cancel", to: "appointments#cancel_appointment"
 
   get "/treatments/ipd/:ipd_id", to: "treatments#get_treatments_for_ipd"
+  get "/treatments/new/:ipd_id", to: "treatments#new", as: "new_ipd_treatment"
+  delete "/treatments/:id", to: "treatments#destroy", as: "treatment_destroy"
 
   get "/ipds/admitted", to: "ipds#get_all_admitted_ipds"
   get "/ipds/ward/admitted", to: "ipds#get_all_admitted_ipds_from_ward"
   get "/ipds/ward", to: "ipds#get_all_ipds_from_ward"
-  put "/ipds/discharge/:id", to: "ipds#discharged_ipd_patient"
+  put "/ipds/discharge/:id", to: "ipds#discharged_ipd_patient", as: "discharge_ipd"
+  get "/ipds/discharge/:id", to: "ipds#discharge", as: "view_discharge_ipd"
 
   get "/beds/all", to: "beds#get_all_beds_and_ipds"
   get "/beds/all/vaccant", to: "beds#get_vaccant_beds"
@@ -44,7 +47,9 @@ Rails.application.routes.draw do
 
   # For admin dashboard
   get "/admin_dashboard", to: "admin#dashboard", as: "admin_dashboard"
-  get "/doctor_dashboard", to: "doctor#dashboard", as: "doctor_dashboard"
+
+  # For doctor dashboard
+  get "/doctor_dashboard", to: "doctors#dashboard", as: "doctor_dashboard"
 
   resources :departments
   resources :patients

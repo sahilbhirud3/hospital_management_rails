@@ -1,0 +1,7 @@
+h1 Discharge IPD Patient
+
+= form_with(url: discharge_ipd_path(@ipd), method: :put, local: true) do |form|
+  .form-group
+    = form.label :treatment_description, "Treatment Description / Discharge Note:"
+    = form.text_area :treatment_description, class: "form-control"
+  = form.submit "Discharge", class: "btn btn-danger"

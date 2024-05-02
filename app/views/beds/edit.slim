@@ -1,0 +1,16 @@
+h1 Edit Bed
+
+= form_for @bed, url: bed_path(@bed), method: :patch do |f|
+  - if @bed.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @bed.errors.full_messages.each do |msg|
+          li = msg
+
+  .form-group
+    label for="status" Status:
+    select.form-control#status name="status"
+        option value="vaccant" Vaccant
+        option value="unavailable" Unavailable 
+  = f.submit 'Update Bed', class: 'btn btn-primary'

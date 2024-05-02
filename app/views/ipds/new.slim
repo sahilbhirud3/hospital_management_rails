@@ -1,0 +1,19 @@
+.container
+  h1 New IPD Admission
+  = form_with(model: @ipd, url: ipds_path, method: "post", class: "mt-4") do |f|
+    .form-group
+      = f.label :department_id, "Department"
+      = f.select :department_id, options_for_select(Department.all.map{ |d| [d.name, d.id] }), { include_blank: "Select Department" }, class: "form-control", required: true
+    .form-group
+      = f.label :patient_id, "Patient"
+      = f.select :patient_id, options_for_select(Patient.all.map{ |p| ["#{p.first_name} #{p.last_name}", p.id] }), { include_blank: "Select Patient" }, class: 'form-control',required: true
+    .form-group
+      = f.label :bed_id, "Bed"
+      = f.select :bed_id, options_for_select(Bed.get_vaccant.map{ |b| ["Ward: #{b.ward_type}, Bed No: #{b.bed_no}", b.id] }), { include_blank: "Select Bed" }, class: "form-control", required: true
+
+    .form-group
+      = f.label :admission_datetime, "Admission Datetime"
+      = f.datetime_local_field :admission_datetime, class: "form-control", required: true
+
+    = f.submit "Create IPD Record", class: "btn btn-primary mt-3"
+

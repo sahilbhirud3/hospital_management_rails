@@ -2,64 +2,67 @@
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h6>Hi
-                <%="#{current_user.first_name} #{current_user.last_name} !"%></h6>
+            <h6>Hi <%="#{current_user.first_name} #{current_user.last_name} !"%></h6>
             <h6>Admin Dashboard</h6>
         </div>
 
         <ul class="list-unstyled components">
-            <li class="">
-                <a href="#homeSubmenu" data-toggle="collapse"
-                    aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-home"></i> Doctor
-                </a>
+             <li>
+                <%= link_to " Departments", departments_path, class: "nav-link"%>
+            </li>
+            <li class>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-home"></i> Doctor</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <%# <a href="#"> All Users</a> %>
-                       <i class="fas fa-users"></i> <%= link_to "All Doctors", "/doctors", class: "nav-link" %>
-                    </li>
-                    <li>
-                        <%= link_to "Departments", departments_path, class: "nav-link" %>
-                    </li>
-                    <li>
                         
-                        <%= link_to "Add Doctor", new_user_path, class: "nav-link" %> 
-                    
+                        <i class="fas fa-users"></i> <%= link_to " All Doctors","/doctors", class: "nav-link" %>
+                    </li>
+                    <li>
+                        <%= link_to " Add Doctor", new_user_path, class:"nav-link" %>
                     </li>
                 </ul>
             </li>
+           
+            
             <li>
-                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-file"></i> IPD Section
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu1">
+                    <li>
+                        <%= link_to " Beds","/beds", class: "nav-link" %>
+                    </li>
+                    <li>
+                        <%= link_to " Patients","/patients", class: "nav-link" %>
+                    </li>
+                    <li>
+                        <%= link_to " IPD","/ipds", class: "nav-link" %>
+                    </li>
+                  
+                </ul>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse"
-                    aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-file"></i> Pages
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-file"></i> Appointments
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 1</a>
+                        <a href="#"><i class="fas fa-file"></i> All Appointments</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 2</a>
+                        <a href="#"><i class="fas fa-file"></i> .</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 3</a>
+                        <a href="#"><i class="fas fa-file"></i> .</a>
                     </li>
                 </ul>
             </li>
-            <li>
-                <a href="#"><i class="fas fa-images"></i> Portfolio</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
-            </li>
+
         </ul>
 
         <ul class="list-unstyled CTAs">
             <li>
-                <a href="https://bootstrapious.com/p/bootstrap-sidebar"
-                    class="article">Back to article</a>
+                <a href="" class="article">Support</a>
             </li>
         </ul>
     </nav>

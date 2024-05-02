@@ -1,0 +1,15 @@
+h1 Edit Department
+
+= form_for @department, url: department_path(@department), method: :patch do |f|
+  - if @department.errors.any?
+    .alert.alert-danger
+      h4 Alert!
+      ul
+        - @department.errors.full_messages.each do |msg|
+          li = msg
+
+  .form-group
+    = f.label :address
+    = f.text_field :address, class: 'form-control'
+
+  = f.submit 'Update Department', class: 'btn btn-primary'

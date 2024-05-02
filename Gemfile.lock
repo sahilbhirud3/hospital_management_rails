@@ -216,6 +216,8 @@ GEM
     public_suffix (5.0.5)
     puma (6.4.2)
       nio4r (~> 2.0)
+    pundit (2.3.1)
+      activesupport (>= 3.0.0)
     racc (1.7.3)
     rack (3.0.10)
     rack-pjax (1.1.0)
@@ -350,6 +352,9 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    will_paginate (3.3.1)
+    will_paginate-bootstrap4 (0.2.2)
+      will_paginate (~> 3.0, >= 3.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.13)
@@ -380,6 +385,7 @@ DEPENDENCIES
   pg (~> 1.1)
   pry-rails
   puma (>= 5.0)
+  pundit
   rails (~> 7.1.3, >= 7.1.3.2)
   rails-controller-testing
   rails_admin
@@ -393,6 +399,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  will_paginate-bootstrap4
 
 RUBY VERSION
    ruby 3.2.2p53
