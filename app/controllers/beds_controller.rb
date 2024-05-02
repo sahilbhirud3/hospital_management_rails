@@ -1,5 +1,5 @@
 class BedsController < ApplicationController
-  before_action :set_bed, only: [:show, :edit, :update]
+  before_action :set_bed, only: [:show, :edit, :update, :toggle_status]
   before_action :authenticate_user!
   before_action :authorize_bed
 
@@ -8,7 +8,7 @@ class BedsController < ApplicationController
     conditions = {}
     conditions[:status] = params[:status] if params[:status].present?
     conditions[:ward_type] = params[:ward_type] if params[:ward_type].present?
-    @beds = Bed.where(conditions).order(:ward_type).paginate(page: params[:page], per_page: 10)
+    @beds = Bed.where(conditions).order(ward_type: :asc).order(Arel.sql("CAST(bed_no AS INTEGER) ASC")).paginate(page: params[:page], per_page: 10)
     respond_to do |format|
       format.html
       format.json { render json: @beds.as_json(except: [:created_at, :updated_at]), status: :ok }
@@ -18,6 +18,21 @@ class BedsController < ApplicationController
   # GET /beds/new
   def new
     @bed = Bed.new
+  end
+
+  def toggle_status
+    # Rails.logger.info("Received params: #{params.inspect}")
+    @bed.status = @bed.status == "vaccant" ? "unavailable" : "vaccant"
+
+    if @bed.save
+      flash[:success] = "Status updated successfully."
+    else
+      flash[:alert] = "Failed to update status."
+    end
+    respond_to do |format|
+      format.html { redirect_to beds_path }
+      format.js
+    end
   end
 
   # GET /beds/1/edit
@@ -40,7 +55,9 @@ class BedsController < ApplicationController
   def create
     if Bed.where(bed_no: bed_params[:bed_no], ward_type: bed_params[:ward_type]).exists?
       respond_to do |format|
-        format.html { redirect_to new_bed_path, notice: "Bed with given number and ward_type is Already Present" }
+        format.html {
+          redirect_to new_bed_path, alert: "Bed with given number and ward_type is Already Present"
+        }
         format.json { render json: { error: "Bed with given number and ward_type is Already Present" }, status: :unprocessable_entity }
       end
     else
@@ -116,6 +133,10 @@ class BedsController < ApplicationController
     @bed = Bed.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Bed Details not found" }, status: :not_found
+  end
+
+  def filtered_params
+    params.permit(:status, :page, :ward_type) # Add permitted parameters here
   end
 
   def bed_params

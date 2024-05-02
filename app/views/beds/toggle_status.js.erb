@@ -1,0 +1,14 @@
+console.log("toggle_status js loaded")
+// Get the ID of the bed from the response
+var bedId = <%= @bed.id %>;
+
+// Get the status of the bed from the response
+var newStatus = "<%= @bed.status %>";
+
+// Find the button associated with the bed and update its text and class
+var button = $("button[data-bed-id='" + bedId + "']");
+if (newStatus === "vacant") {
+    button.text("Make Unavailable").removeClass("btn-success").addClass("btn-warning");
+} else if (newStatus === "unavailable") {
+    button.text("Make Vacant").removeClass("btn-warning").addClass("btn-success");
+}

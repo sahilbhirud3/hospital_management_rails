@@ -3,19 +3,23 @@ class BedPolicy < ApplicationPolicy
     user.role == "admin"
   end
 
-  def get_all_beds_and_ipds
+  def toggle_status?
     user.role == "admin"
   end
 
-  def get_vacant_beds
+  def get_all_beds_and_ipds?
     user.role == "admin"
   end
 
-  def get_acquired_beds_and_ipds
+  def get_vacant_beds?
     user.role == "admin"
   end
 
-  def get_ward_types
+  def get_acquired_beds_and_ipds?
+    user.role == "admin"
+  end
+
+  def get_ward_types?
     user.role == "admin"
   end
 

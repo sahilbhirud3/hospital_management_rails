@@ -8,16 +8,16 @@
       label for="status" Status:
       select.form-control#status name="status"
         option value="" All
-        option value="vaccant" Vaccant
-        option value="acquired" Acquired 
-        option value="unavailable" Unavailable 
+        option value="vaccant" selected=('selected' if params[:status] == "vaccant") Vaccant
+        option value="acquired" selected=('selected' if params[:status] == "acquired") Acquired 
+        option value="unavailable" selected=('selected' if params[:status] == "unavailable")  Unavailable 
     
     .form-group.mb-2   
       label for="ward_type" Ward Type:
       select.form-control#ward_type name="ward_type"
         option value="" All
-        -Bed::WARD_TYPES.each do |type|
-          option value="#{type}" #{type}
+        - Bed::WARD_TYPES.each do |type|
+          option value="#{type}" selected=('selected' if params[:ward_type] == "#{type}") #{type}
     = submit_tag "Search", class: "btn btn-primary"
 
   table.table.table-striped.table-bordered
@@ -35,6 +35,9 @@
           td = bed.ward_type
           td = bed.bed_no
           td = bed.status
-          td
-            = link_to "Edit", edit_bed_path(bed), class: "btn btn-primary btn-sm"
+          td 
+            - if bed.status == "vaccant"
+              = button_to "Make Unavailable", toggle_status_bed_path(bed), method: :patch, remote: true, class: "btn btn-warning btn-sm", data: { turbo_confirm: "Are you sure?" }
+            - elsif bed.status == "unavailable"
+              = button_to "Make Vaccant", toggle_status_bed_path(bed), method: :patch, remote: true, class: "btn btn-success btn-sm", data: { confirm: "Are you sure?" }
 = will_paginate @beds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

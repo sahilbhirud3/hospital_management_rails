@@ -33,9 +33,9 @@ Rails.application.routes.draw do
   put "/ipds/discharge/:id", to: "ipds#discharged_ipd_patient", as: "discharge_ipd"
   get "/ipds/discharge/:id", to: "ipds#discharge", as: "view_discharge_ipd"
 
-  get "/beds/all", to: "beds#get_all_beds_and_ipds"
-  get "/beds/all/vaccant", to: "beds#get_vaccant_beds"
-  get "/beds/all/acquired", to: "beds#get_acquired_beds_and_ipds"
+  # get "/beds/all", to: "beds#get_all_beds_and_ipds"
+  # get "/beds/all/vaccant", to: "beds#get_vaccant_beds"
+  # get "/beds/all/acquired", to: "beds#get_acquired_beds_and_ipds"
   get "/beds/ward_types", to: "beds#get_ward_types"
 
   get "/patients/user/:user_id", to: "patients#get_all_patients_for_user"
@@ -54,7 +54,11 @@ Rails.application.routes.draw do
   resources :departments
   resources :patients
   resources :users
-  resources :beds
+  resources :beds do
+    member do
+      patch "toggle_status"
+    end
+  end
   resources :appointments
   resources :ipds
   resources :treatments
