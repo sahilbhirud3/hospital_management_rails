@@ -50,8 +50,8 @@
           td = ipd.admission_datetime.strftime("%Y-%m-%d %H:%M")
           td = ipd.status
           td 
-            = link_to "Show", ipd_path(ipd), class: "btn btn-primary"
+            = link_to "Show", ipd_path(ipd), class: "btn btn-primary btn-sm", style: "margin-right:10px"
             - unless ipd.status == "discharged"
-              = link_to "Discharge", view_discharge_ipd_path(ipd), method: :get, class: "btn btn-danger"
+              = link_to "Discharge", discharge_ipd_path(ipd), method: :get, class: "btn btn-danger btn-sm"
 
   = will_paginate @ipds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

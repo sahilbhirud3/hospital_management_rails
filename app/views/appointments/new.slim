@@ -1,0 +1,78 @@
+= form_with(model: @appointment, url: appointments_path, local: true, class: "appointment-form") do |f|
+  = f.hidden_field :user_id, value: current_user.id
+  .form-group
+    = f.label :department_id, "Select Department"
+    = f.select :department_id, options_from_collection_for_select(Department.all, :id, :name), { prompt: 'Select Department' }, { id: 'department-select', class: 'form-control' }
+
+  .form-group
+    = f.label :doctor_id, "Select Doctor"
+    = f.select :doctor_id, {}, { prompt: 'Select Doctor' }, { id: 'doctor-select', class: 'form-control' }
+
+  .form-group
+    = f.label :slot_start_datetime, "Select Slot"
+    = f.select :slot_start_datetime, {}, { prompt: 'Select Slot' }, { id: 'slot-select', class: 'form-control' }
+
+  .form-group
+    = f.label :patient_id, "Select Patient"
+    - if @patients.present?
+      = f.select :patient_id, options_from_collection_for_select(@patients, :id, ->(patient) { "#{patient.first_name} #{patient.last_name}" }), { prompt: 'Select Patient' }, { id: 'patient-select', class: 'form-control' }
+    - else
+      p No patients found
+  .form-group
+    = f.label :appointment_type, "Select Appointment Type"
+    = f.select :appointment_type, [['Follow-up', 'followup'], ['Check-up', 'checkup']], { prompt: 'Select Appointment Type' }, { id: 'appointment-type-select', class: 'form-control' }
+
+  = f.submit 'Book Appointment', class: 'btn btn-primary'
+
+javascript:
+  document.getElementById('department-select').addEventListener('change', function() {
+    var departmentId = this.value;
+    
+    fetch('/departments/' + departmentId + '/get_all_doctors')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        var select = document.getElementById('doctor-select');
+        select.innerHTML = '<option value="">Select Doctor</option>'; 
+        data.forEach(function(doctor) {
+          var option = document.createElement('option');
+          option.value = doctor.id;
+          option.text = "Dr. " + doctor.first_name + " " + doctor.last_name;
+          select.appendChild(option);
+        });
+      })
+      .catch(function(error) {
+        console.error('Fetch error:', error);
+      });
+  });
+
+  document.getElementById('doctor-select').addEventListener('change', function() {
+    var doctorId = this.value;
+
+    fetch('/doctors/' + doctorId + '/availableslots')
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        var select = document.getElementById('slot-select');
+        select.innerHTML = '<option value="">Select Slot</option>';
+        data.forEach(function(slot) {
+          var option = document.createElement('option');
+          // Assuming slot is in an appropriate format, adjust this if needed
+          option.value = slot;
+          option.text = slot; 
+          select.appendChild(option);
+        });
+      })
+      .catch(function(error) {
+        console.error('Fetch error:', error);
+      });
+  });
+

@@ -3,26 +3,18 @@ class DoctorsController < ApplicationController
   #GET /doctors
   #all doctors
   def index
-    @doctors = User.get_doctors
-    @doctors_with_details = User.get_doctors.joins(:doctor_detail).paginate(page: params[:page], per_page: 10)
+    @doctors = User.includes(doctor_detail: :department)
+                 .select(:id, :first_name, :last_name, :email, :contact, :role, 'departments.name as department_name')
+                 .joins(doctor_detail: :department)
+                 .paginate(page: params[:page], per_page: 10)
+
     respond_to do |format|
-      format.json { render json: @doctors.as_json(only: [:id, :first_name, :last_name, :email, :contact, :role]), status: :ok }
-      format.html { @doctors }
+      format.json { render json: @doctors.as_json(except: [:department_id], methods: [:department_name]), status: :ok }
+      format.html
     end
   end
 
-  #GET /doctors/department/:deptid
-  #all doctors from particular(deptid) department
-  def get_all_doctors_from_department
-    @doctor_names = DoctorDetail.joins(:user, :department).where(department_id: params[:deptid]).pluck(:user_id, :first_name, :last_name)
-    result = @doctor_names.map do |user_id, first_name, last_name|
-      { id: user_id, first_name: first_name, last_name: last_name }
-    end
-    respond_to do |format|
-      format.json { render json: result }
-      format.html { @doctor_names }
-    end
-  end
+
 
   #POST /doctors
   #insert doctor and doctors_details

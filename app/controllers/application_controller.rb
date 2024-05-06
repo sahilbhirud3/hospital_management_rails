@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
     when "admin"
       admin_dashboard_path
     when "doctor"
-      doctor_dashboard_path
+      dashboard_doctors_path
     else
-      user_dashboard_path
+      dashboard_users_path
     end
   end
 

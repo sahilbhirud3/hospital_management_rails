@@ -4,7 +4,10 @@ class PatientsController < ApplicationController
   before_action :authorize_patient
   # GET /patients
   def index
-    @patients = Patient.all.paginate(page: params[:page], per_page: 10)
+    conditions = { user_id: params[:user_id].presence || current_user.id }
+    @patients = current_user.role == "admin" ? Patient.all.where("patients.first_name ILIKE ? OR patients.last_name ILIKE ?", "%#{params[:patient_name]}%", "%#{params[:patient_name]}%") : Patient.where(conditions).where("patients.first_name ILIKE ? OR patients.last_name ILIKE ?", "%#{params[:patient_name]}%", "%#{params[:patient_name]}%")
+    @patients = @patients.paginate(page: params[:page], per_page: 10)
+
     respond_to do |format|
       format.html
       format.json { render json: @patients.as_json(except: [:created_at, :updated_at]), status: :ok }

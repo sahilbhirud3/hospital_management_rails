@@ -1,7 +1,7 @@
 class DepartmentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:show, :edit, :update, :destroy]
   before_action :set_department, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_department
+  before_action :authorize_department, only: [:show, :edit, :update, :destroy]
   # GET /departments
   def index
     @departments = Department.all.order(:id).paginate(page: params[:page], per_page: 10)
@@ -11,6 +11,20 @@ class DepartmentsController < ApplicationController
       format.html
     end
   end
+
+  #GET /department/:id/doctors
+  #all doctors from particular(deptid) department
+  def get_all_doctors
+    @doctor_names = DoctorDetail.joins(:user, :department).where(department_id: params[:id]).pluck(:user_id, :first_name, :last_name)
+    result = @doctor_names.map do |user_id, first_name, last_name|
+      { id: user_id, first_name: first_name, last_name: last_name }
+    end
+    respond_to do |format|
+      format.json { render json: result }
+      format.html { @doctor_names }
+    end
+  end
+
 
   # GET /departments/1
   def show

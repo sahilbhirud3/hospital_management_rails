@@ -1,9 +1,9 @@
 class UserPolicy < ApplicationPolicy
-  def new_user?
+  def new_doctor_user?
     user.role == "admin"
   end
 
-  def create_user?
+  def create_doctor_user?
     user.role == "admin"
   end
 
@@ -28,6 +28,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def dashboard?
-    user.role == "admin"
+    user.role == "admin" || user.role == "user"
   end
 end

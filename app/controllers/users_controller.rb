@@ -3,12 +3,12 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_user
 
-  def new_user
+  def new_doctor_user
     @user = User.new
     @user.build_doctor_detail
   end
 
-  def create_user
+  def create_doctor_user
     @user = User.new(user_params1)
     @user.role = "doctor"
     @user.password = "123456" # Set default password

@@ -21,19 +21,23 @@ class BedsController < ApplicationController
   end
 
   def toggle_status
-    # Rails.logger.info("Received params: #{params.inspect}")
-    @bed.status = @bed.status == "vaccant" ? "unavailable" : "vaccant"
 
-    if @bed.save
-      flash[:success] = "Status updated successfully."
+    @bed = Bed.find(params[:id])
+    if @bed.update(status: (@bed.status == "vaccant" ? "unavailable" : "vaccant"))
+
+      respond_to do |format|
+        format.html { redirect_to beds_path, notice: "Status updated successfully." }
+        format.js
+      end
     else
       flash[:alert] = "Failed to update status."
-    end
-    respond_to do |format|
-      format.html { redirect_to beds_path }
-      format.js
+      respond_to do |format|
+        format.html { redirect_to beds_path }
+        format.js
+      end
     end
   end
+
 
   # GET /beds/1/edit
   def edit

@@ -8,14 +8,18 @@ table.table.table-bordered#doctor-table
       th Last Name
       th Contact
       th Email
+      th Department
       th Actions
   tbody
-    - @doctors_with_details.each_with_index do |doctor, index|
+    - @doctors.each_with_index do |doctor, index|
       tr
         td= doctor.id
         td= doctor.first_name
         td= doctor.last_name
         td= doctor.contact
         td= doctor.email
-        td= link_to "Show", show_doctors_path(doctor), class: "btn btn-primary"
-= will_paginate @doctors_with_details, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          
+        td= doctor.department_name
+        td
+          = link_to "Show", doctor_path(doctor), class: "btn btn-primary btn-sm"
+          / i.fas.fa-user-secret.fa-7x.fa-shake
+= will_paginate @doctors, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

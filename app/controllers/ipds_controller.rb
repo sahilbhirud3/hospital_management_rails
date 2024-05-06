@@ -1,5 +1,5 @@
 class IpdsController < ApplicationController
-  before_action :set_ipd, only: [:show, :discharged_ipd_patient, :discharge]
+  before_action :set_ipd, only: [:show, :discharge, :discharge]
   before_action :authenticate_user!
   before_action :authorize_ipd
   #GET /ipds
@@ -99,7 +99,7 @@ class IpdsController < ApplicationController
   end
 
   #PUT /ipds/discharge/:id
-  def discharged_ipd_patient
+  def discharge
     if @ipd.status == "discharged"
       respond_to do |format|
         format.html { redirect_to ipds_path, alert: "IPD already discharged" }

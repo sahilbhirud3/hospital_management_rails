@@ -13,3 +13,4 @@ class Department < ApplicationRecord
   validates :address, presence: true, length: { maximum: 255 }
   # has_many :doctor_details
 end
+  

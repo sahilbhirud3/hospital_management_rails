@@ -19,7 +19,8 @@ gem "slim-rails"
 gem "rails_admin"
 gem "will_paginate-bootstrap4"
 gem "pundit"
-
+gem "font-awesome-sass"
+gem "jquery-rails"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -41,6 +42,7 @@ gem "jbuilder"
 gem "paper_trail"
 #faker for dummy data filling
 gem "faker"
+gem "simple_form" 
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -61,7 +63,7 @@ gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-
+gem "byebug", platform: :mri
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
@@ -83,7 +85,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem "byebug", platform: :mri
+  # gem "byebug", platform: :mri
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "rails-controller-testing"

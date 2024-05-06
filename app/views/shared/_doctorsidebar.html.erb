@@ -11,52 +11,31 @@
             <li class="">
                 <a href="#homeSubmenu" data-toggle="collapse"
                     aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-home"></i> User
+                    <i class="fas fa-home"></i> Appointments
                 </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <a href="#"><i class="fas fa-users"></i> All Users</a>
+                        <%= link_to "All Appointments", doctor_appointments_path(current_user), class:"nav-link" %>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-home"></i> Home 2</a>
+                        <a href="#"><i class="fas fa-home"></i> </a>
                     </li>
                     <li>
-                        <a href="#"><i class="fas fa-home"></i> Home 3</a>
+                        <a href="#"><i class="fas fa-home"></i> </a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#"><i class="fas fa-info-circle"></i> </a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse"
-                    aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-file"></i> Pages
-                </a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-file"></i> Page 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-images"></i> Portfolio</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
-            </li>
+            
+          
         </ul>
 
         <ul class="list-unstyled CTAs">
             <li>
-                <a href="https://bootstrapious.com/p/bootstrap-sidebar"
-                    class="article">Back to article</a>
+                <a 
+                    class="article">Support</a>
             </li>
         </ul>
     </nav>

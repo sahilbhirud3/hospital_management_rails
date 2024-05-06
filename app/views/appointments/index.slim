@@ -1,0 +1,37 @@
+= form_tag appointments_path, method: :get do
+  .form-row
+    .form-group.col-md-4
+      = select_tag :status, options_for_select(['scheduled', 'checked', 'cancelled'], params[:status]), include_blank: 'Status', class: 'form-control'
+    -if current_user.role == "admin" || current_user.role == "user"
+      .form-group.col-md-4
+        = select_tag :doctor_id, options_for_select(@doctors.map{ |d| ["Dr. #{d[:first_name]} #{d[:last_name]}", d[:id]] }, params[:doctor_id]), include_blank: 'Doctor Name', class: 'form-control'
+    .form-group.col-md-4
+      = date_field_tag :date, class: 'form-control', max: Date.today, id: 'datetime-field', placeholder: 'Date', value: params[:date]
+      = hidden_field_tag :date, params[:date]
+  .form-row
+    .form-group.col-md-12
+      = submit_tag 'Search', class: 'btn btn-primary'
+
+
+table.table.table-striped.table-bordered
+  thead.thead-dark
+    tr
+      th Appointment ID
+      th Slot Start Datetime
+      th Doctor Name 
+      th Patient Name
+      th Boooked By
+      th Appointment Type
+      th Status
+      
+  tbody
+    - @appointments.each do |appointment|
+      tr
+        td= appointment.id
+        td= appointment.slot_start_datetime.strftime("%Y-%m-%d %H:%M ")
+        td= " Dr. #{appointment.doctor.first_name} #{appointment.doctor.last_name}"
+        td= "#{appointment.patient.first_name} #{appointment.patient.last_name}"
+        td= "#{appointment.user.first_name} #{appointment.user.last_name}"
+        td= appointment.appointment_type
+        td= appointment.status
+= will_paginate @appointments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

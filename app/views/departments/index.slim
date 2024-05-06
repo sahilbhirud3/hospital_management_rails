@@ -1,5 +1,5 @@
 h1 All Departments
-= link_to "New", new_department_path, class: "btn btn-success"
+= link_to "New", new_department_path, class: "btn btn-success", style:"margin-bottom:10px"
 br
 
 table.table.table-striped.table-bordered
@@ -16,7 +16,7 @@ table.table.table-striped.table-bordered
         td= department.name
         td= department.address
         td
-          = link_to "Show", department_path(department), class: "btn btn-primary"
+          = link_to "Show", department_path(department), class: "btn btn-primary btn-sm", style:"margin-right:10px"
           
-          = link_to "Edit", edit_department_path(department), class: "btn btn-secondary"
+          = link_to "Edit", edit_department_path(department), class: "btn btn-secondary btn-sm"
 = will_paginate @departments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

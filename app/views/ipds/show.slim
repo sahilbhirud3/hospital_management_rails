@@ -1,3 +1,4 @@
+=link_to 'Back', ipds_path, class: 'btn btn-secondary'        
 - if @ipd
   .container
     .row
@@ -66,7 +67,7 @@
             td= treatment.description
             td= treatment.datetime.strftime("%Y-%m-%d %H:%M")
             -if @ipd.status=="admitted"
-              td= button_to "Delete", treatment_destroy_path(treatment), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger"
+              td= button_to "Delete", ipd_treatment_path(@ipd,treatment), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "btn btn-danger"
     
   -if @ipd.status=="admitted"
     .container.mt-3

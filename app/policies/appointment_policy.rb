@@ -1,6 +1,6 @@
 class AppointmentPolicy < ApplicationPolicy
   def index?
-    user.role == "admin"
+    user.role == "admin" || user.role == "user" || user.role == "doctor"
   end
 
   def show?
@@ -8,7 +8,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def create?
-    user.role == "admin"
+    user.role == "admin" || user.role == "user"
   end
 
   def update?
@@ -20,7 +20,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def new?
-    user.role == "admin"
+    user.role == "admin" || user.role == "user"
   end
 
   def edit?

@@ -1,8 +1,18 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
+import * as Turbo from "@hotwired/turbo"
 import "controllers"
 import toastr from 'toastr';
 import 'toastr/toastr.scss';
+import Rails from "@rails/ujs";
+import "jquery";
+
+//= require jquery
+//= require jquery_ujs
+//= require rails-ujs
+
+
+Rails.start();
 // Initialize Toastr with options
 document.addEventListener("DOMContentLoaded", function() {
     toastr.options = {

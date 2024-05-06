@@ -31,6 +31,6 @@
         dl.dl-horizontal
           dt Department Name
           dd= @doctor.department.name
-  =link_to 'Back', :back, class: 'btn btn-secondary'        
+  =link_to 'Back', doctors_path, class: 'btn btn-secondary'        
 - else
   p Doctor not found
