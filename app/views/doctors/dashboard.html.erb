@@ -1,1 +1,3 @@
 <h1>Doctor Dashboard</h1>
+<hr>
+<%= line_chart Appointment.where(doctor_id: current_user.id).group_by_day(:created_at).count, title:"Daywise Appointments"  %>

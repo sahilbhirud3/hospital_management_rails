@@ -26,13 +26,13 @@ class BedsController < ApplicationController
     if @bed.update(status: (@bed.status == "vaccant" ? "unavailable" : "vaccant"))
 
       respond_to do |format|
-        format.html { redirect_to beds_path, notice: "Status updated successfully." }
+        format.html { redirect_back_or_to beds_path, notice: " Bed status updated." }
         format.js
       end
     else
-      flash[:alert] = "Failed to update status."
+      flash[:alert] = "Failed to update status..oops something went wrong."
       respond_to do |format|
-        format.html { redirect_to beds_path }
+        format.html { redirect_back_or_to beds_path }
         format.js
       end
     end

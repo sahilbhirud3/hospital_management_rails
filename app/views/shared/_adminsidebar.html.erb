@@ -3,57 +3,75 @@
     <nav id="sidebar">
         <div class="sidebar-header">
             <h6>Hi <%="#{current_user.first_name} #{current_user.last_name} !"%></h6>
-            <h6>Admin Dashboard</h6>
+            <hr>
+           <a href="/admin_dashboard" style="text-decoration:none; color:white"> <h5>Admin Dashboard</h5></a>
         </div>
 
         <ul class="list-unstyled components">
-             <li>
-                <%= link_to " Departments", departments_path, class: "nav-link"%>
+             
+            <li>
+                <%= link_to departments_path, style: "text-decoration:none" do %>
+                    <%= image_tag("/images/building.png", alt: "not loaded", style: "width: 30px; margin-left: 5px;") %>
+                    Departments
+                <% end %>
             </li>
+
             <li class>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fas fa-home"></i> Doctor</a>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="text-decoration:none">
+                    <%= image_tag("/images/doctor.png", alt: "not loaded", style: "width: 30px; margin-left: 5px;text-decoration:none") %> 
+                    Doctor
+                </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        
-                        <i class="fas fa-users"></i> <%= link_to " All Doctors","/doctors", class: "nav-link" %>
+                        <%= link_to doctors_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/medical-team.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            All Doctors
+                        <% end %>
                     </li>
                     <li>
-                        <%= link_to " Add Doctor", new_doctor_users_path, class:"nav-link" %>
+                        <%= link_to new_doctor_users_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/doctor.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            Add Doctor
+                       <%end%>
                     </li>
                 </ul>
             </li>
            
-            
             <li>
-                <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-file"></i> IPD Section
+                <a href="#pageSubmenu1" style="text-decoration:none" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <%= image_tag("/images/patient.png", alt: "not loaded", style: "width: 30px; margin-left: 5px;") %> IPD Section
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu1">
                     <li>
-                        <%= link_to " Beds","/beds", class: "nav-link" %>
+                        <%= link_to beds_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/examination (1).png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            Beds
+                        <%end%>
                     </li>
                     <li>
-                        <%= link_to " Patients","/patients", class: "nav-link" %>
-                    </li>
+                        <%= link_to patients_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/examination.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            Patients
+                        <%end%>
+                    </li>   
                     <li>
-                        <%= link_to " IPD","/ipds", class: "nav-link" %>
+                         <%= link_to ipds_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/bed.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            IPD
+                        <%end%>
                     </li>
-                  
                 </ul>
             </li>
             <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <i class="fas fa-file"></i> Appointments
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" style="text-decoration:none">
+                   <%= image_tag("/images/advice.png", alt: "not loaded", style: "width: 30px; margin-right: 5px;") %> Appointments
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <%= link_to " All Appointments",appointments_path, class: "nav-link" %>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-file"></i> .</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-file"></i> .</a>
+                        <%= link_to appointments_path, style: "text-decoration:none" do %>
+                            <%= image_tag("/images/advice.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            All Appointments
+                        <%end%>
                     </li>
                 </ul>
             </li>

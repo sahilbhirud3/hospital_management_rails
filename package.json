@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@hotwired/turbo": "^8.0.4",
+    "chart.js": "^4.4.2",
+    "chartkick": "^5.0.1",
     "toastr": "^2.1.4"
   }
 }

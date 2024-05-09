@@ -22,12 +22,30 @@ class AppointmentsController < ApplicationController
     if current_user.role == "user" || current_user.role == "admin"
       conditions[:doctor_id] = params[:doctor_id] if params[:doctor_id].present?
     end
+    @search_date = params[:date]
     conditions[:slot_start_datetime] = Date.parse(params[:date].to_s).beginning_of_day..Date.parse(params[:date].to_s).end_of_day if params[:date].present?
     @appointments = Appointment.includes(:patient, :doctor, :user).order(slot_start_datetime: :desc).where(conditions)
     @appointments = @appointments.paginate(page: params[:page], per_page: 10)
     respond_to do |format|
       format.html
       format.json { render json: @appointments.as_json(except: [:created_at, :updated_at]), status: :ok }
+    end
+  end
+
+  def update_status
+    @appointment = Appointment.find(params[:id])
+    if @appointment.update(status: params[:status])
+      respond_to do |format|
+        format.js
+        format.html do
+          flash[:notice] = "Appointment status updated"
+          redirect_back_or_to appointments_path
+        end
+
+      end
+    else
+      flash[:alert] = "Something went wrong!"
+      redirect_to appointments_path
     end
   end
 
@@ -124,6 +142,10 @@ class AppointmentsController < ApplicationController
 
   def appointment_params
     params.require(:appointment).permit(:user_id, :doctor_id, :patient_id, :slot_start_datetime, :appointment_type)
+  end
+
+  def appointment_params1
+    params.require(:appointment).permit(:status)
   end
 
   def patient_params

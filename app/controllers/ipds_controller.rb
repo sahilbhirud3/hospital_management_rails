@@ -18,6 +18,9 @@ class IpdsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: @ipds.as_json(except: [:created_at, :updated_at]), status: :ok }
+      format.pdf do
+        render pdf: "ipds_report", layout: "pdf"
+      end
     end
   end
 
@@ -46,6 +49,26 @@ class IpdsController < ApplicationController
       format.json { render json: ipd_json, status: :ok }
     end
   end
+
+  # In your controller
+  # def generate_pdf
+  #   conditions = {}
+  #     conditions[:status] = params[:status] if params[:status].present?
+  #     conditions[:department_id] = params[:department_id] if params[:department_id].present?
+  #     conditions["beds.ward_type"] = params[:ward_type] if params[:ward_type].present?
+  #     @ipds = Ipd.eager_load(:patient, :department, :bed)
+  #                .where(conditions)
+  #                .where("patients.first_name ILIKE ? OR patients.last_name ILIKE ?", "%#{params[:patient_name]}%", "%#{params[:patient_name]}%")
+  #                .order(admission_datetime: :desc)
+  #                .select(:id, :patient_id, "patients.first_name", "patients.last_name", "patients.gender", :department_id, "departments.name", :bed_id, "beds.bed_no", "beds.ward_type", :treatment_description, :admission_datetime, :status)
+
+  #   respond_to do |format|
+  #     format.html
+  #     format.pdf do
+  #       render pdf: 'ipds'
+  #     end
+  #   end
+  # end
 
   #POST /ipds
   #Create new ipd record

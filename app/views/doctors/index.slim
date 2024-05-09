@@ -20,6 +20,9 @@ table.table.table-bordered#doctor-table
         td= doctor.email
         td= doctor.department_name
         td
-          = link_to "Show", doctor_path(doctor), class: "btn btn-primary btn-sm"
+          = link_to doctor_path(doctor), style: "margin-right: 10px;" do
+            = image_tag("/images/eye.png", alt: "not loaded", style: "width: 20px")
+          = link_to edit_doctor_path(doctor), style: "margin-right: 10px;" do
+            = image_tag("/images/edit.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")  
           / i.fas.fa-user-secret.fa-7x.fa-shake
 = will_paginate @doctors, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

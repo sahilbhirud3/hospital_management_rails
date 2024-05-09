@@ -16,7 +16,10 @@ table.table.table-striped.table-bordered
         td= department.name
         td= department.address
         td
-          = link_to "Show", department_path(department), class: "btn btn-primary btn-sm", style:"margin-right:10px"
+          = link_to department_path(department), style: "margin-right: 10px;" do
+            = image_tag("/images/eye.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")
+          = link_to edit_department_path(department), style: "margin-right: 10px;" do
+            = image_tag("/images/edit.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")  
+
           
-          = link_to "Edit", edit_department_path(department), class: "btn btn-secondary btn-sm"
 = will_paginate @departments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer          

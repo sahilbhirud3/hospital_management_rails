@@ -1,0 +1,24 @@
+h1 IPDs List
+table.table.table-striped.table-bordered
+    thead.thead-dark
+      tr
+        th ID
+        th Patient ID
+        th Patient Name
+        th Department
+        th Ward
+        th Bed No
+        th Admission DateTime
+        th Status   
+    tbody
+      - @ipds.each do |ipd|
+        tr
+          td = ipd.id
+          td = ipd.patient_id
+          td = "#{ipd.patient.first_name} #{ipd.patient.last_name}"
+          td = ipd.department.name
+          td = ipd.ward_type
+          td = ipd.bed.bed_no
+          td = ipd.admission_datetime.strftime("%Y-%m-%d %H:%M")
+          td = ipd.status
+          

@@ -1,1 +1,20 @@
 <h1>Admin Dashboard</h1>
+<hr>
+<%# <%= line_chart({"2021-01-01" => 2, "2021-01-02" => 3}) %> 
+
+<%= line_chart Ipd.group_by_day(:created_at).count, title:"Number of IPD Admissions"   %>
+
+
+<hr>
+<%# <%= line_chart @goals.map { |goal|
+    {name: goal.name, data: goal.feats.group_by_week(:created_at).count}
+} %> 
+<%= line_chart Ipd.eager_load(:department).group("departments.name").group(:created_at).count,title:"Department wise IPD Admission" %>
+<hr>
+
+<%@data=Appointment.group(:doctor_id).count%>
+<%@data= @data.map{|id,count| user=User.find(id);  ["Dr. #{user.first_name} #{user.last_name}",count] }%>
+<%= pie_chart @data ,donut: true,title: "Doctorwise Appointments" %>
+
+<hr>
+<%= line_chart Appointment.group_by_day(:created_at).count, title:"Daywise Appointments"  %>

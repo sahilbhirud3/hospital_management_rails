@@ -1,20 +1,20 @@
 # app/controllers/doctors_controller.rb
 class DoctorsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :authorize_doctor_details, only: [:index, :show, :edit, :update]
   #GET /doctors
   #all doctors
   def index
     @doctors = User.includes(doctor_detail: :department)
-                 .select(:id, :first_name, :last_name, :email, :contact, :role, 'departments.name as department_name')
-                 .joins(doctor_detail: :department)
-                 .paginate(page: params[:page], per_page: 10)
+      .select(:id, :first_name, :last_name, :email, :contact, :role, "departments.name as department_name")
+      .joins(doctor_detail: :department)
+      .paginate(page: params[:page], per_page: 10)
 
     respond_to do |format|
       format.json { render json: @doctors.as_json(except: [:department_id], methods: [:department_name]), status: :ok }
       format.html
     end
   end
-
-
 
   #POST /doctors
   #insert doctor and doctors_details
@@ -53,6 +53,21 @@ class DoctorsController < ApplicationController
   def dashboard
   end
 
+  def edit
+    @doctor = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @doctor = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
+    if @doctor.update(doctor_edit_params)
+      redirect_to doctor_path(@doctor.user_id), notice: "Doctor was successfully updated."
+    else
+      flash[:alert] = @doctor.errors.full_message(:required_time_slot, " is not acceptable")
+      render :edit
+    end
+  end
+
   #GET /doctors/:id
   def show
     @doctor = DoctorDetail.joins(:user).joins(:department).find_by(user_id: params[:id])
@@ -85,5 +100,13 @@ class DoctorsController < ApplicationController
       :first_name, :last_name, :email, :contact, :password, :role,
       doctor_detail_attributes: [:regno, :department_id, :start_time, :end_time, :required_time_slot, :qualification],
     )
+  end
+
+  def doctor_edit_params
+    params.require(:doctor_detail).permit(:start_time, :end_time, :required_time_slot)
+  end
+
+  def authorize_doctor_details
+    authorize DoctorDetail
   end
 end

@@ -36,8 +36,9 @@
           td = bed.status
           td 
             - if bed.status == "vaccant"
-              = button_to "Make Unavailable", toggle_status_bed_path(bed), method: :patch, id: "markUnavailable#{bed.id}", remote: true
+              = button_to "Make Unavailable", toggle_status_bed_path(bed), method: :patch, id: "markUnavailable#{bed.id}", remote: true, class: "btn btn-success btn-sm"
+
             - elsif bed.status == "unavailable"
-              = button_to "Make Vaccant", toggle_status_bed_path(bed), method: :patch, remote: true, class: "btn btn-success btn-sm"
+              = button_to "Make Vaccant", toggle_status_bed_path(bed), method: :patch, remote: true, class: "btn btn-warning btn-sm"
 
 = will_paginate @beds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

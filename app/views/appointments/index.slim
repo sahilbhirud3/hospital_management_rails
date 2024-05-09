@@ -1,13 +1,14 @@
+h2 Appointments
 = form_tag appointments_path, method: :get do
   .form-row
     .form-group.col-md-4
       = select_tag :status, options_for_select(['scheduled', 'checked', 'cancelled'], params[:status]), include_blank: 'Status', class: 'form-control'
-    -if current_user.role == "admin" || current_user.role == "user"
+    - if current_user.role == "admin" || current_user.role == "user"
       .form-group.col-md-4
         = select_tag :doctor_id, options_for_select(@doctors.map{ |d| ["Dr. #{d[:first_name]} #{d[:last_name]}", d[:id]] }, params[:doctor_id]), include_blank: 'Doctor Name', class: 'form-control'
     .form-group.col-md-4
-      = date_field_tag :date, class: 'form-control', max: Date.today, id: 'datetime-field', placeholder: 'Date', value: params[:date]
-      = hidden_field_tag :date, params[:date]
+      = date_field_tag :date, nil, class: 'form-control', max: Date.current, id: 'datetime-field', placeholder: 'Date',value:params[:date]
+
   .form-row
     .form-group.col-md-12
       = submit_tag 'Search', class: 'btn btn-primary'
@@ -16,14 +17,14 @@
 table.table.table-striped.table-bordered
   thead.thead-dark
     tr
-      th Appointment ID
-      th Slot Start Datetime
+      th ID
+      th Start Datetime
       th Doctor Name 
       th Patient Name
       th Boooked By
-      th Appointment Type
+      th Type
       th Status
-      
+      th Actions
   tbody
     - @appointments.each do |appointment|
       tr
@@ -33,5 +34,32 @@ table.table.table-striped.table-bordered
         td= "#{appointment.patient.first_name} #{appointment.patient.last_name}"
         td= "#{appointment.user.first_name} #{appointment.user.last_name}"
         td= appointment.appointment_type
-        td= appointment.status
+
+        - if appointment.status === "checked"
+          td(style="color:green")
+            div.container(style="display: flex; align-items: center;")
+              |#{appointment.status}   
+              img(src="../../images/check-mark.png" alt="not loaded" style="width: 20px; margin-left: 5px;")
+
+        -elsif appointment.status == "cancelled"
+          td(style="color:red")
+            div.container(style="display: flex; align-items: center;")
+              |#{appointment.status}
+              img(src="../../images/x-button.png" alt="not loaded" style="width: 20px; margin-left: 5px;")
+        -else
+          td(style="color:#ab9b09")
+            div.container(style="display: flex; align-items: center;")
+              |#{appointment.status}
+              img(src="../../images/schedule.png" alt="not loaded" style="width: 20px; margin-left: 5px;")
+        td
+          -if !(appointment.status == "cancelled" || appointment.status == "checked")     
+            -if current_user.role=="user"
+              =button_to "Cancelled", update_status_appointment_path(appointment,params:{status:"cancelled"}), method: :patch, class: "btn btn-danger btn-sm"      
+            -else
+              = form_tag(update_status_appointment_path(appointment), method: :patch, remote: true,data: { remote: true })
+                = select_tag :status, options_for_select(['cancelled', 'checked'], appointment.status), class: 'form-control'
+                = submit_tag 'Change Status', class: 'btn btn-warning btn-sm',style: "margin-top:10px"
+          
+            
+
 = will_paginate @appointments, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

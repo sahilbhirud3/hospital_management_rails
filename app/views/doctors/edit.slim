@@ -1,0 +1,25 @@
+- content_for :title, "Edit Doctor"
+
+.container
+  .row
+    .col-md-8.offset-md-2
+      .card.mt-5
+        .card-header.text-center
+          h2 Edit Doctor
+        .card-body
+          = form_for @doctor, url: doctor_path(@doctor.user_id), method: :patch do |f|
+            .form-group
+              = f.label :start_time, "Start Time"
+              = f.time_field :start_time, class: "form-control", required: true
+            .form-group
+              = f.label :end_time, "End Time"
+              = f.time_field :end_time, class: "form-control", required: true
+            .form-group
+              = f.label :required_time_slot, "Required Time Slot"
+              = f.text_field :required_time_slot, class: "form-control", required: true
+            = f.submit "Update", class: "btn btn-primary"
+            -if current_user.role=="admin"
+              =link_to 'Back', doctors_path, class: 'btn btn-secondary' 
+            -else
+              =link_to 'Back', doctor_path(current_user), class: 'btn btn-secondary' 
+

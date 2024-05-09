@@ -1,12 +1,12 @@
 h1 Patients List
 = link_to "New", new_patient_path, class: "btn btn-success", style: "margin-bottom: 30px"
+hr  
 = form_tag patients_path, method: :get do
   .form-row
+    .form-group.col-md-3          
+        input.form-control#patient_name name="patient_name" placeholder="Patient Name" type="text" value=params[:patient_name]
     .form-group.col-md-3
-      label for="patient_name" Patient Name:
-      input.form-control#patient_name name="patient_name" type="text" value=params[:patient_name]
-    .form-group.col-md-3
-      button.btn.btn-primary.mt-4 type="submit" Search
+      button.btn.btn-primary type="submit" Search
     
 table.table.table-striped.table-bordered
   thead.thead-dark
@@ -26,6 +26,10 @@ table.table.table-striped.table-bordered
         td= patient.gender
         td= patient.contact
         td
-          = link_to "Show", patient_path(patient), class: "btn btn-primary btn-sm", style: "margin-right: 20px"
-          = link_to "Edit", edit_patient_path(patient), class: "btn btn-secondary btn-sm"
+          = link_to patient_path(patient), style: "margin-right: 20px;" do
+            = image_tag("/images/eye.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")
+          = link_to edit_patient_path(patient), style: "margin-right: 10px;" do
+            = image_tag("/images/edit.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")  
+
+         
 = will_paginate @patients, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

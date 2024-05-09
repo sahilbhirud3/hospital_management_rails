@@ -8,6 +8,7 @@
 
         <ul class="list-unstyled components">
             <li>
+                
                 <%= link_to "Patients", user_patients_path(current_user.id), class: "nav-link"%>
             </li>
             
@@ -26,7 +27,7 @@
             </li>
         </ul>
     </nav>
-
+    
     <!-- Page Content  -->
     <div id="content">
         <%=yield %>

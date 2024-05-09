@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PDF Layout</title>
+  <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+  <%= wicked_pdf_javascript_include_tag "number_pages" %>
+  <%= stylesheet_link_tag "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", "data-turbo-track": "reload"  %>
+
+  
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      
+    }
+    .header {
+      text-align: right;
+      font-size: 12px;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    Generated on <%= DateTime.now.strftime('%Y-%m-%d %H:%M:%S') %>
+  </div>
+
+
+    <div id="content">
+      <%= yield %>
+    </div>
+  <div class="footer">
+    Hospital Management System 2024
+  </div>
+</body>
+</html>

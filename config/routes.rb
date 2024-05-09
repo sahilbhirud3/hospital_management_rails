@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   #Doctors resource
-  resources :doctors, only: [:create, :index, :show] do
+  resources :doctors, only: [:create, :index, :show, :edit, :update] do
     member do
       get :availableslots, to: "doctors#todays_available_appointment_slot_for_doctor"
     end
@@ -63,6 +63,8 @@ Rails.application.routes.draw do
     member do
       put :discharge
       get :discharge
+      # get :generate_pdf
+
     end
     resources :treatments, only: [:index, :new, :destroy, :create]
   end
@@ -70,6 +72,7 @@ Rails.application.routes.draw do
   # Routes for appointments
   resources :appointments do
     member do
+      patch :update_status
       put :cancel, to: "appointments#cancel_appointment"
     end
   end

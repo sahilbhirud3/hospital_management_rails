@@ -6,8 +6,15 @@
                 <%="#{current_user.first_name} #{current_user.last_name} !"%></h6>
             <h6>Doctor Dashboard</h6>
         </div>
-
-        <ul class="list-unstyled components">
+          <ul class="list-unstyled components">
+            <li>
+                
+                <%= link_to doctor_path(current_user), style: "text-decoration:none" do %>
+            <%= image_tag("/images/doctor.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+            Profile
+            <%end%>
+            </li>
+         
             <li class="">
                 <a href="#homeSubmenu" data-toggle="collapse"
                     aria-expanded="false" class="dropdown-toggle">
@@ -15,14 +22,12 @@
                 </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
                     <li>
-                        <%= link_to "All Appointments", doctor_appointments_path(current_user), class:"nav-link" %>
+                         <%= link_to doctor_appointments_path(current_user), style: "text-decoration:none" do %>
+                            <%= image_tag("/images/advice.png", alt: "not loaded", style: "width: 20px; margin-right: 5px;") %>
+                            All Appointments
+                        <%end%>
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-home"></i> </a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fas fa-home"></i> </a>
-                    </li>
+                    
                 </ul>
             </li>
             <li>

@@ -26,4 +26,8 @@ class AppointmentPolicy < ApplicationPolicy
   def edit?
     user.role == "admin"
   end
+
+  def update_status?
+    user.role == "admin" || user.role == "doctor" || user.role == "user"
+  end
 end

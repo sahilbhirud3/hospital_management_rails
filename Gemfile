@@ -21,6 +21,9 @@ gem "will_paginate-bootstrap4"
 gem "pundit"
 gem "font-awesome-sass"
 gem "jquery-rails"
+gem "wicked_pdf"
+gem "chartkick"
+gem "groupdate"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -42,7 +45,12 @@ gem "jbuilder"
 gem "paper_trail"
 #faker for dummy data filling
 gem "faker"
-gem "simple_form" 
+gem "simple_form"
+
+#for schedule job
+gem "whenever", require: false
+#for background process(framework)
+# gem 'sidekiq'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"

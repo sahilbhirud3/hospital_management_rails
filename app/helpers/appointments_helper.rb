@@ -59,4 +59,18 @@ module AppointmentsHelper
   def self.department_wise_appointments(date)
     Appointment.joins(doctor: { doctor_detail: :department }).where("DATE(slot_start_datetime) = ?", date).group("departments.name").count
   end
+
+
+
+  # schedule job for updating appointment status...if the status is scheduled for previous dates then it will changed to checked
+  def self.update_status_job
+    puts "Update Status called @ #{DateTime.now}"
+    if Appointment.where("DATE(slot_start_datetime) < ?", Date.current).where(status:"scheduled").update(status:"checked")
+      puts "Appointment Status Updated Successfully @ #{DateTime.now}"
+    else
+      puts "Appointment Status Not Updated Successfully @ #{DateTime.now}"
+    end
+  end
+
+
 end
