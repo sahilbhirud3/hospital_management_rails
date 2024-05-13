@@ -62,6 +62,6 @@
             = link_to ipd_path(ipd), style: "margin-right: 20px;" do
               = image_tag("/images/eye.png", alt: "not loaded", style: "width: 20px; margin-left: 5px;")
             - unless ipd.status == "discharged"
-              = link_to "Discharge", discharge_ipd_path(ipd), method: :get, class: "btn btn-danger btn-sm"
+              = link_to "Discharge", edit_discharge_ipd_path(ipd), class: "btn btn-danger btn-sm"
 
   = will_paginate @ipds, renderer: WillPaginate::ActionView::BootstrapLinkRenderer

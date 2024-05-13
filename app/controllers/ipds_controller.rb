@@ -1,5 +1,5 @@
 class IpdsController < ApplicationController
-  before_action :set_ipd, only: [:show, :discharge, :discharge]
+  before_action :set_ipd, only: [:show, :update_discharge, :edit_discharge]
   before_action :authenticate_user!
   before_action :authorize_ipd
   #GET /ipds
@@ -47,28 +47,11 @@ class IpdsController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render json: ipd_json, status: :ok }
+      format.pdf do
+        render pdf: "ipd_report", layout: "pdf"
+      end
     end
   end
-
-  # In your controller
-  # def generate_pdf
-  #   conditions = {}
-  #     conditions[:status] = params[:status] if params[:status].present?
-  #     conditions[:department_id] = params[:department_id] if params[:department_id].present?
-  #     conditions["beds.ward_type"] = params[:ward_type] if params[:ward_type].present?
-  #     @ipds = Ipd.eager_load(:patient, :department, :bed)
-  #                .where(conditions)
-  #                .where("patients.first_name ILIKE ? OR patients.last_name ILIKE ?", "%#{params[:patient_name]}%", "%#{params[:patient_name]}%")
-  #                .order(admission_datetime: :desc)
-  #                .select(:id, :patient_id, "patients.first_name", "patients.last_name", "patients.gender", :department_id, "departments.name", :bed_id, "beds.bed_no", "beds.ward_type", :treatment_description, :admission_datetime, :status)
-
-  #   respond_to do |format|
-  #     format.html
-  #     format.pdf do
-  #       render pdf: 'ipds'
-  #     end
-  #   end
-  # end
 
   #POST /ipds
   #Create new ipd record
@@ -118,11 +101,11 @@ class IpdsController < ApplicationController
     end
   end
 
-  def discharge
+  def edit_discharge
   end
 
   #PUT /ipds/discharge/:id
-  def discharge
+  def update_discharge
     if @ipd.status == "discharged"
       respond_to do |format|
         format.html { redirect_to ipds_path, alert: "IPD already discharged" }

@@ -24,6 +24,9 @@ gem "jquery-rails"
 gem "wicked_pdf"
 gem "chartkick"
 gem "groupdate"
+
+gem "simplecov", require: false, group: :test
+gem "execution_time"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 

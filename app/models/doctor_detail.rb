@@ -18,7 +18,6 @@ class DoctorDetail < ApplicationRecord
   validates :regno, uniqueness: true
   validate :validate_required_time_slot
   validates :qualification, length: { maximum: 255 }
-  # app/models/your_model.rb
 
   def validate_required_time_slot
     if required_time_slot.nil? || !(required_time_slot >= 10 && (required_time_slot % 60 == 0 || 60 % required_time_slot == 0))

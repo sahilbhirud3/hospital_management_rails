@@ -2,9 +2,18 @@ class AdminController < ApplicationController
   before_action :authenticate_admin
 
   def dashboard
-    # Admin dashboard logic
+    doctor_ids = Appointment.group(:doctor_id).count.keys
+    users = User.where(id: doctor_ids).pluck(:id, :first_name, :last_name).index_by(&:first)
 
-    @data = { "2024-05-01" => 3, "2024-05-02" => 3, "2024-05-03" => 5 }
+    @data = Appointment.group(:doctor_id).count.map do |id, count|
+      user = users[id]
+      ["Dr. #{user[1]} #{user[2]}", count]
+    end
+
+    @doctor_count = User.where(role: "doctor").count
+    @vaccant_bed_count = Bed.where(status: "vaccant").count
+    @appointment_count = Appointment.count
+    @admitted_patient_count = Ipd.where(status: "admitted").count
   end
 
   private

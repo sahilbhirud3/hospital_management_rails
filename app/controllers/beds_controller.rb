@@ -8,7 +8,8 @@ class BedsController < ApplicationController
     conditions = {}
     conditions[:status] = params[:status] if params[:status].present?
     conditions[:ward_type] = params[:ward_type] if params[:ward_type].present?
-    @beds = Bed.where(conditions).order(ward_type: :asc).order(Arel.sql("CAST(bed_no AS INTEGER) ASC")).paginate(page: params[:page], per_page: 10)
+
+    @beds = Bed.eager_load(ipds: :patient).where(conditions).order(ward_type: :asc).order(Arel.sql("CAST(bed_no AS INTEGER) ASC")).paginate(page: params[:page], per_page: 10)
     respond_to do |format|
       format.html
       format.json { render json: @beds.as_json(except: [:created_at, :updated_at]), status: :ok }
@@ -21,10 +22,8 @@ class BedsController < ApplicationController
   end
 
   def toggle_status
-
     @bed = Bed.find(params[:id])
     if @bed.update(status: (@bed.status == "vaccant" ? "unavailable" : "vaccant"))
-
       respond_to do |format|
         format.html { redirect_back_or_to beds_path, notice: " Bed status updated." }
         format.js
@@ -37,7 +36,6 @@ class BedsController < ApplicationController
       end
     end
   end
-
 
   # GET /beds/1/edit
   def edit

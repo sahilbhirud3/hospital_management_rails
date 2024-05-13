@@ -1,20 +1,111 @@
 <h1>Admin Dashboard</h1>
 <hr>
+
+<div class="container">
+    <div class="row ">
+        <div class="col-xl-3 col-lg-3">
+       
+            <div class="card l-bg-green-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-solid fa-hospital-user"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Total Doctors </h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                 <%= @doctor_count  %> 
+                            </h2>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+      
+       
+        </div>
+        <div class="col-xl-3 col-lg-3">
+
+            <div class="card l-bg-orange">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large" ><i class="fas fa-solid fa-bed"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Vaccant Beds</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                               <%=@vaccant_bed_count  %>
+                            </h2>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <div class="card l-bg-blue-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-sharp fa-solid fa-bed-pulse"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Admitted Patients
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                <%= @admitted_patient_count %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+       
+        </div>
+        <div class="col-xl-3 col-lg-3">
+       
+            <div class="card l-bg-cherry">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-solid fa-calendar-check"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Total Appointments</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                 <%= @appointment_count %> 
+                            </h2>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+      
+       
+        </div>
+        
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <%= line_chart Ipd.eager_load(:department).group("departments.name").group_by_day(:created_at).count,title:"Department wise IPD Admission",discrete: true %> 
+    </div>
+    <div class="col">
+       
+        <%= pie_chart @data ,donut: true,title: "Doctorwise Appointments" %>
+    </div>    
+
+</div>
+<hr>
 <%# <%= line_chart({"2021-01-01" => 2, "2021-01-02" => 3}) %> 
 
-<%= line_chart Ipd.group_by_day(:created_at).count, title:"Number of IPD Admissions"   %>
+<%= line_chart Ipd.group_by_day(:created_at).count, title:"Number of IPD Admissions" ,colors: ["#eb0976" ]  %>
 
 
 <hr>
-<%# <%= line_chart @goals.map { |goal|
-    {name: goal.name, data: goal.feats.group_by_week(:created_at).count}
-} %> 
-<%= line_chart Ipd.eager_load(:department).group("departments.name").group(:created_at).count,title:"Department wise IPD Admission" %>
-<hr>
 
-<%@data=Appointment.group(:doctor_id).count%>
-<%@data= @data.map{|id,count| user=User.find(id);  ["Dr. #{user.first_name} #{user.last_name}",count] }%>
-<%= pie_chart @data ,donut: true,title: "Doctorwise Appointments" %>
+<%= line_chart Appointment.group_by_day(:created_at).count, title:"Daywise Appointments",colors: ["#513bb3"]  %>
 
-<hr>
-<%= line_chart Appointment.group_by_day(:created_at).count, title:"Daywise Appointments"  %>

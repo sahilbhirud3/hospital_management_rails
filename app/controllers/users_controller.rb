@@ -79,7 +79,9 @@ class UsersController < ApplicationController
 
   # Dashboard
   def dashboard
-    # User dashboard logic
+    @patient_count = Patient.where(user_id: current_user.id).count
+    @appointment_count = Appointment.where(user_id: current_user.id).count
+    @todays_appointment_count = Appointment.where(slot_start_datetime: (Date.today.beginning_of_day..Date.today.end_of_day)).count
   end
 
   private

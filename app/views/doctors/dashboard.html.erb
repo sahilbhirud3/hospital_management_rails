@@ -1,3 +1,67 @@
 <h1>Doctor Dashboard</h1>
 <hr>
+<div class="container">
+    <div class="row ">
+        <div class="col-xl-4 col-lg-4">
+            <div class="card l-bg-orange">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large" ><i class="fas fa-solid fa-calendar"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Total Appointments</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                               <%=@appointment_count  %>
+                            </h2>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4">
+            <div class="card l-bg-blue-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-solid fa-clock"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Today's Appointment 
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                <%= @todays_appointment_count %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
+       
+        </div>
+        <div class="col-xl-4 col-lg-4">
+       
+            <div class="card l-bg-green-dark">
+                <div class="card-statistic-3 p-4">
+                    <div class="card-icon card-icon-large"><i class="fas fa-solid fa-calendar-check"></i></div>
+                    <div class="mb-4">
+                        <h5 class="card-title mb-0">Today's Checked Appointment</h5>
+                    </div>
+                    <div class="row align-items-center mb-2 d-flex">
+                        <div class="col-8">
+                            <h2 class="d-flex align-items-center mb-0">
+                                 <%= @todays_checked_appointment_count %> 
+                            </h2>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+      
+       
+        </div>
+    </div>
+</div>
+<hr>
 <%= line_chart Appointment.where(doctor_id: current_user.id).group_by_day(:created_at).count, title:"Daywise Appointments"  %>

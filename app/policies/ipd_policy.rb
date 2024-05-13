@@ -15,7 +15,11 @@ class IpdPolicy < ApplicationPolicy
     user.role == "admin"
   end
 
-  def discharge?
+  def edit_discharge?
+    user.role == "admin"
+  end
+
+  def update_discharge?
     user.role == "admin"
   end
 

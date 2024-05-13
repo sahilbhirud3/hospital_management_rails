@@ -30,15 +30,16 @@
 </head>
 <body>
   <div class="header">
-    Generated on <%= DateTime.now.strftime('%Y-%m-%d %H:%M:%S') %>
+    PDF Generated on <%= DateTime.now.strftime('%Y-%m-%d %H:%M:%S') %>
   </div>
 
 
     <div id="content">
       <%= yield %>
     </div>
+    
   <div class="footer">
-    Hospital Management System 2024
+    Hospital Management System @2024
   </div>
 </body>
 </html>

@@ -1,0 +1,69 @@
+-if @ipd
+  .container
+    .row
+      .col-md-6
+        h2 IPD Details
+        dl.dl-horizontal
+          dt IPD ID
+          dd= @ipd.id
+          dt Admission DateTime
+          dd= @ipd.admission_datetime.strftime("%y-%m-%d %H:%M")
+          dt Discharge DateTime
+          - if @ipd.discharge_datetime
+            dd= @ipd.discharge_datetime.strftime("%y-%m-%d %H:%M")
+          - else
+            dd= "Not discharged yet"
+          dt Treatment Description
+          dd= @ipd.treatment_description
+          dt Status
+          dd= @ipd.status
+      .col-md-6
+        h2 Patient Details
+        dl.dl-horizontal
+          dt First Name
+          dd= @ipd.patient.first_name
+          dt Last Name
+          dd= @ipd.patient.last_name
+          dt BirthDate
+          dd= @ipd.patient.birthdate
+          dt Gender
+          dd= @ipd.patient.gender
+          dt Contact
+          dd= @ipd.patient.contact
+    .row
+      .col-md-6
+        h2 Bed Details
+        dl.dl-horizontal
+          dt Bed No
+          dd= @ipd.bed.bed_no
+          dt Ward
+          dd= @ipd.bed.ward_type
+          dt Status
+          dd= @ipd.bed.status
+      .col-md-6
+        h2 Department Details
+        dl.dl-horizontal
+          dt ID
+          dd= @ipd.department.id
+          dt Name
+          dd= @ipd.department.name
+          dt Address
+          dd= @ipd.department.address
+  .container
+    h2 Treatments
+    table.table.table-striped.table-bordered
+      thead.thead-dark
+        tr
+          th ID
+          th Description
+          th Date and Time
+          -if @ipd.status=="admitted"
+            th Actions
+      tbody
+        - @ipd.treatments.each do |treatment|
+          tr
+            td= treatment.id
+            td= treatment.description
+            td= treatment.datetime.strftime("%Y-%m-%d %H:%M")
+- else
+  p Ipd Not Found            

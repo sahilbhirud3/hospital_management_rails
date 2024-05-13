@@ -51,6 +51,9 @@ class DoctorsController < ApplicationController
   end
 
   def dashboard
+    @appointment_count = Appointment.where(doctor_id: current_user.id).count
+    @todays_appointment_count = Appointment.where(doctor_id: current_user.id).where(slot_start_datetime: (Date.today.beginning_of_day..Date.today.end_of_day)).count
+    @todays_checked_appointment_count = Appointment.where(doctor_id: current_user.id).where(slot_start_datetime: (Date.today.beginning_of_day..Date.today.end_of_day)).where(status: "checked").count
   end
 
   def edit

@@ -25,7 +25,6 @@ class DepartmentsController < ApplicationController
     end
   end
 
-
   # GET /departments/1
   def show
     respond_to do |format|

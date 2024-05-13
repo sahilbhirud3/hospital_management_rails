@@ -1,3 +1,6 @@
+# == Route Map
+#
+
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
 
@@ -61,8 +64,8 @@ Rails.application.routes.draw do
   # nested routes for treatments
   resources :ipds do
     member do
-      put :discharge
-      get :discharge
+      put :update_discharge
+      get :edit_discharge
       # get :generate_pdf
 
     end

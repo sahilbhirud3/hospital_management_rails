@@ -1,4 +1,10 @@
-=link_to 'Back', ipds_path, class: 'btn btn-secondary'        
+div style="display: flex; align-items: center; margin-bottom: 5px;"
+  = link_to 'Back', ipds_path, class: 'btn btn-secondary btn-sm'
+  div style="border: 1px solid black; border-radius: 5px; padding: 0 5px; margin-left: 5px; cursor: pointer;"
+    = link_to ipd_path(@ipd,format: :pdf), style: "text-decoration:none;color:#343A40" do
+      | pdf 
+      = image_tag("/images/download.gif", alt: "not loaded", style: "width: 30px;")
+
 - if @ipd
   .container
     .row
